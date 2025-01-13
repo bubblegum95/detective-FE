@@ -1,0 +1,51 @@
+.signInForm {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginInput {
+  color: black;
+  background-color: whitesmoke;
+  padding: 5px;
+  width: 300px;
+}
+
+.validationMsg {
+  display: flex;
+  gap: 10px;
+  border: 5px;
+}
+
+.validationMsg > div {
+  color: red;
+  background-color: yellow;
+  border: 1px solid blue;
+  border-radius: 5%;
+  padding: 5px;
+}
+
+.btn {
+  border: 1px solid black;
+  border-radius: 10%;
+  background-color: white;
+  color: blue;
+  margin: 10px auto;
+  padding: 5px 10px;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btns > span {
+  border: 1px solid yellow;
+  border-radius: 15%;
+  background-color: white;
+  color: blue;
+  margin-top: 10px;
+  padding: 5px 10px;
+}

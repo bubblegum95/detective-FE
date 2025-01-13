@@ -1,8 +1,6 @@
-import './globals.css';
-import '../styles/navBar.css';
-import '../styles/content.css';
+import '../../styles/signUp.css';
 
-export default function RootLayout({
+export default function layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
