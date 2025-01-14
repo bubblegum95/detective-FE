@@ -19,3 +19,8 @@
   border-radius: 5%;
   padding: 5px;
 }
+
+.submitBtn {
+  cursor: pointer;
+  visibility: hidden;
+}

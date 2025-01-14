@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 export function passwordEngCheck(password: string) {
   let reg = /(?=.*?[a-z])(?=.*?[A-Z])/;
   return reg.test(password);
@@ -19,8 +21,6 @@ export function phoneNumberCheck(phone: any) {
 }
 
 export function comparePassword(password: string, pwConfirm: string) {
-  console.log('compare pw 랜더링 중...');
-
   let isCompared: boolean;
   let comparedMsg: string;
 
