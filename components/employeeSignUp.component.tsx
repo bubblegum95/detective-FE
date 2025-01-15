@@ -3,17 +3,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   comparePassword,
+  numberVelidationCheck,
   passwordEngCheck,
   passwordLengthCheck,
   passwordNumSpcCheck,
-  phoneNumberCheck,
 } from '../hooks/useValidationCheck';
 import useDebounce from '../hooks/useDebounce';
 import foundEmail from '../hooks/useFoundEmail';
 import SignUpProps from '../types/signUpProps.interface';
 import { signUp } from '../hooks/useSignUp';
 
-export default function EmployeeSignUp({ isActive }: SignUpProps) {
+export default function ConsumerSignUp({ isActive }: SignUpProps) {
   const [formState, setFormState] = useState<{ [key: string]: any }>({
     name: '',
     email: '',
@@ -24,29 +24,46 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
     gender: '',
   });
 
-  const [availableEmail, setAvailableEmail] = useState<boolean>(false);
-  const [emailCheckMsg, setEmailCheckMsg] = useState<string>('');
+  const [emailState, setEmailState] = useState<{ [key: string]: any }>({
+    isAvailable: false,
+    message: '',
+  });
 
-  const [isCorrectPhone, setIsCorrectPhone] = useState<boolean>(false);
-  const [phoneNumCheckMsg, setPhoneNumCheckMsg] = useState<string>('');
+  const [phoneState, setPhoneState] = useState<{ [key: string]: any }>({
+    isAvailable: false,
+    message: '',
+  });
 
-  const [existEn, setExistEn] = useState<boolean>(false);
-  const [existNum, setExistNum] = useState<boolean>(false);
-  const [suitableLen, setSuitableLen] = useState<boolean>(false);
+  const [passwordState, setPasswordState] = useState<{ [key: string]: any }>({
+    useEng: false,
+    useEngMsg: '',
+    useNum: false,
+    useNumMsg: '',
+    adjustLen: false,
+    adjustLenMsg: '',
+  });
+
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
-
-  const [comparedPw, setComparedPw] = useState<boolean>(false);
-  const [comparedPwMsg, setComparedPwMsg] = useState<string>('');
+  const [pwConfirmState, setPwConfirmState] = useState<{ [key: string]: any }>({
+    isAvailable: false,
+    message: '',
+  });
 
   const handlePasswordValiCheck = useCallback((password: string): void => {
     const enCheck = passwordEngCheck(password);
-    enCheck ? setExistEn(() => true) : setExistEn(() => false);
+    enCheck
+      ? setPasswordState((pre) => ({ ...pre, useEng: true }))
+      : setPasswordState((pre) => ({ ...pre, useEng: false }));
 
     const numCheck = passwordNumSpcCheck(password);
-    numCheck ? setExistNum(() => true) : setExistNum(() => false);
+    numCheck
+      ? setPasswordState((pre) => ({ ...pre, useNum: true }))
+      : setPasswordState((pre) => ({ ...pre, useNum: false }));
 
     const lengthCheck = passwordLengthCheck(password);
-    lengthCheck ? setSuitableLen(() => true) : setSuitableLen(() => false);
+    lengthCheck
+      ? setPasswordState((pre) => ({ ...pre, adjustLen: true }))
+      : setPasswordState((pre) => ({ ...pre, adjustLen: false }));
   }, []);
 
   function updateForm(key: string, value: any): void {
@@ -72,20 +89,19 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
   }, [formState.password]);
 
   useEffect(() => {
-    setAvailableEmail(false);
-    setEmailCheckMsg('이메일 검증 미완료');
+    setEmailState({ isAvailable: false, message: '이메일 검증 미완료' });
   }, [formState.email]);
 
   useEffect(() => {
-    const isCorrectPhoneNum = phoneNumberCheck(formState.phoneNumber);
-    setIsCorrectPhone(() => isCorrectPhoneNum);
+    const isCorrectPhoneNum = numberVelidationCheck(formState.phoneNumber);
+    setPhoneState((pre) => ({ ...pre, isAvailable: isCorrectPhoneNum }));
   }, [formState.phoneNumber]);
 
   useEffect(() => {
-    isCorrectPhone
-      ? setPhoneNumCheckMsg('')
-      : setPhoneNumCheckMsg('번호만 입력해주세요.');
-  }, [isCorrectPhone]);
+    phoneState.isAvailable
+      ? setPhoneState((pre) => ({ ...pre, message: '' }))
+      : setPhoneState((pre) => ({ ...pre, message: '번호만 입력해주세요' }));
+  }, [phoneState.isAvailable]);
 
   useEffect(() => {
     const cleanUp = useDebounce(
@@ -101,8 +117,7 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
       formState.password,
       formState.passwordConfirm
     );
-    setComparedPw(() => isCompared);
-    setComparedPwMsg(() => comparedMsg);
+    setPwConfirmState({ isAvailable: isCompared, message: comparedMsg });
   }, [formState.passwordConfirm]);
 
   return (
@@ -127,9 +142,7 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
           type="email"
           className="emailInput"
           value={formState.email}
-          onChange={(e) => {
-            handleUpdateForm('email');
-          }}
+          onChange={handleUpdateForm('email')}
           minLength={3}
           maxLength={40}
           placeholder="email"
@@ -140,14 +153,16 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
             const { isExistingEmail, foundEmailMsg } = await foundEmail(
               formState.email
             );
-            setAvailableEmail(isExistingEmail);
-            setEmailCheckMsg(foundEmailMsg);
+            setEmailState({
+              isAvailable: isExistingEmail,
+              message: foundEmailMsg,
+            });
           }}
         >
           이메일 검증
         </button>
         <div className="validationMsg">
-          <div>{emailCheckMsg}</div>
+          <div>{emailState.message}</div>
         </div>
         <legend>nickname</legend>
         <input
@@ -170,7 +185,7 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
           placeholder="phone number"
         />
         <div className="validationMsg">
-          <div>{phoneNumCheckMsg}</div>
+          <div>{phoneState.message}</div>
         </div>
         <legend>password</legend>
         <input
@@ -194,21 +209,21 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
           placeholder="password"
         />
         <div className="validationMsg">
-          <div>{comparedPwMsg}</div>
+          <div>{pwConfirmState.message}</div>
         </div>
         <fieldset>
           <legend>gender</legend>
           <input
             type="radio"
-            name="gender"
             value={'male'}
+            name="gender"
             onChange={handleUpdateForm('gender')}
           />
           남성
           <input
             type="radio"
-            name="gender"
             value={'female'}
+            name="gender"
             onChange={handleUpdateForm('gender')}
           />
           여성
@@ -216,14 +231,16 @@ export default function EmployeeSignUp({ isActive }: SignUpProps) {
         <button
           className="submitBtn"
           disabled={
-            !existEn ||
-            !existNum ||
-            !suitableLen ||
-            !comparedPw ||
-            !availableEmail
+            !emailState.isAvailable ||
+            !phoneState.isAvailable ||
+            !passwordState.useEng ||
+            !passwordState.useNum ||
+            !passwordState.adjustLen ||
+            !pwConfirmState.isAvailable
           }
           onClick={async (e) => {
             e.preventDefault();
+            console.log(formState);
             await signUp(
               'http://127.0.0.1:3300/auth/signup/employee',
               formState

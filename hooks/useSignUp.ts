@@ -6,14 +6,14 @@ export async function signUp(
   try {
     const response = await fetch(url, {
       method: 'POST',
-      headers,
+      headers: headers ?? { 'Content-type': 'application/json' },
       body: JSON.stringify({
         ...form,
       }),
     });
 
     if (!response.ok) {
-      throw new Error('서버 응답 없음');
+      throw new Error('회원가입 할 수 없습니다.');
     }
 
     const data = await response.json();
@@ -24,6 +24,6 @@ export async function signUp(
 
     alert('회원가입 성공');
   } catch (e) {
-    alert(`회원가입 실패: ${e}`);
+    alert(e);
   }
 }

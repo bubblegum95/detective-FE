@@ -15,7 +15,7 @@ export function passwordLengthCheck(password: string) {
   return reg.test(password);
 }
 
-export function phoneNumberCheck(phone: any) {
+export function numberVelidationCheck(phone: any) {
   let reg = /^[0-9]*$/;
   return reg.test(phone);
 }
