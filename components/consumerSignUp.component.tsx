@@ -12,6 +12,7 @@ import useDebounce from '../hooks/useDebounce';
 import foundEmail from '../hooks/useFoundEmail';
 import SignUpProps from '../types/signUpProps.interface';
 import { signUp } from '../hooks/useSignUp';
+import { useRouter } from 'next/navigation';
 
 export default function ConsumerSignUp({ isActive }: SignUpProps) {
   const [formState, setFormState] = useState<{ [key: string]: any }>({
@@ -222,7 +223,6 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
           }
           onClick={async (e) => {
             e.preventDefault();
-            console.log(formState);
             await signUp(
               'http://127.0.0.1:3300/auth/signup/consumer',
               formState

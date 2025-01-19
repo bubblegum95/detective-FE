@@ -1,0 +1,42 @@
+.dashboard {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.sideBar {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: start;
+  border: 1px solid yellow;
+}
+
+@media (max-width: 768px) {
+  /* 화면 너비가 768px 이하일 때 */
+  .sideBar {
+    flex-direction: row; /* 수평 정렬로 변경 */
+  }
+}
+
+.sideBar > div > button {
+  width: auto;
+  height: 30px;
+}
+
+.userInfo {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.userInfoData {
+  display: flex;
+  flex-direction: column;
+}
+
+.userInfoData > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

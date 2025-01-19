@@ -240,7 +240,6 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
           }
           onClick={async (e) => {
             e.preventDefault();
-            console.log(formState);
             await signUp(
               'http://127.0.0.1:3300/auth/signup/employee',
               formState

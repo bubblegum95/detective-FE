@@ -2,34 +2,47 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import getUserInfo from '../../hooks/useGetUserInfo';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from '../../features/userInfoSlice';
+import { useRouter } from 'next/navigation';
+
+async function signIn(email: string, password: string, cb: () => Promise<any>) {
+  try {
+    const response = await fetch('http://127.0.0.1:3300/auth/signin', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error('서버 응답 에러');
+    }
+
+    // const cookies = response.headers.getSetCookie();
+    // if (!cookies.includes('authorization')) {
+    //   throw new Error('토큰을 발급 받을 수 없습니다.');
+    // }
+
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error(data.message);
+    }
+
+    alert('로그인 성공');
+    return cb();
+  } catch (e) {
+    console.log(e);
+    alert(e);
+  }
+}
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const signIn = () => {
-    console.log('로그인을 시도합니다.');
-    fetch('http://127.0.0.1:3300/auth/signin', {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('서버의 응답이 없습니다.');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('fetch resolve: ', data);
-        if (data.success) {
-          alert(`로그인 성공`);
-        } else {
-          alert(`로그인 실패: ${data.message}`);
-        }
-      })
-      .catch((e) => console.log('error: ', e));
-  };
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   return (
     <div>
@@ -58,9 +71,22 @@ export default function SignIn() {
         />
         <br />
         <button
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault(); // 폼 기본 동작 방지
-            signIn();
+            const { name, nickname, phoneNumber, createdAt, detective } =
+              await signIn(email, password, getUserInfo);
+            dispatch(
+              setUserInfo({
+                name,
+                email,
+                nickname,
+                phoneNumber,
+                createdAt,
+                detective,
+              })
+            );
+            // redirection : home
+            router.push('/');
           }}
           className="btn"
         >

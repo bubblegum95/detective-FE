@@ -1,9 +1,12 @@
+import { useRouter } from 'next/router';
+
 export async function signUp(
   url: string,
   form: { [key: string]: any },
   headers?: { [key: string]: string }
 ) {
   try {
+    const router = useRouter();
     const response = await fetch(url, {
       method: 'POST',
       headers: headers ?? { 'Content-type': 'application/json' },
@@ -23,6 +26,7 @@ export async function signUp(
     }
 
     alert('회원가입 성공');
+    router.push('/');
   } catch (e) {
     alert(e);
   }
