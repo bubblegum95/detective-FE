@@ -7,7 +7,8 @@ export const initialState: UserInfoState = {
   nickname: '',
   phoneNumber: '',
   createdAt: '',
-  detective: {},
+  detective: null,
+  profile: null,
 };
 
 const userInfoSlice = createSlice({
@@ -23,6 +24,8 @@ const userInfoSlice = createSlice({
       nickname: '',
       phoneNumber: '',
       createdAt: '',
+      detective: null,
+      profile: null,
     }),
   },
 });

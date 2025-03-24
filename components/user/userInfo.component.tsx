@@ -1,21 +1,26 @@
 'use client';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 
 const UserInfo = () => {
   const userInfo = useSelector((state: RootState) => state.userInfo);
-
+  const url = process.env.BASE_URL;
+  const defaultImage =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQVBnzyBUCefWBzjFKnRTPiLetwlAkmY6cAw&s';
+  const userImage = userInfo.profile
+    ? `${url}/public/images/${userInfo.profile.path}`
+    : defaultImage;
   return (
     <div className="userInfo">
       <div className="image">
         <Image
-          src={
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQVBnzyBUCefWBzjFKnRTPiLetwlAkmY6cAw&s'
-          }
-          alt=""
-          width={350}
-          height={200}
+          src={userImage}
+          alt="user image"
+          priority={false}
+          layout="intrinsic"
+          width={300}
+          height={0}
         />
       </div>
       <div className="userInfoData">

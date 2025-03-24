@@ -1,37 +1,34 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import getUserInfo from '../../hooks/useGetUserInfo';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setUserInfo } from '../../features/userInfoSlice';
 import { useRouter } from 'next/navigation';
+import getUserInfo from '../../utils/getUserInfo';
+import { setUserInfo } from '../../features/userInfoSlice';
+import { UserInfoState } from '../../types/userInfoState.interface';
 
-async function signIn(email: string, password: string, cb: () => Promise<any>) {
+async function signIn(email: string, password: string) {
   try {
-    const response = await fetch('http://127.0.0.1:3300/auth/signin', {
+    const url = process.env.BASE_URL;
+    const path = process.env.SIGN_IN;
+    const response = await fetch(`${url}/auth/signin`, {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ email, password }),
-      credentials: 'include',
     });
 
     if (!response.ok) {
       throw new Error('서버 응답 에러');
     }
 
-    // const cookies = response.headers.getSetCookie();
-    // if (!cookies.includes('authorization')) {
-    //   throw new Error('토큰을 발급 받을 수 없습니다.');
-    // }
-
     const data = await response.json();
     if (!data.success) {
       throw new Error(data.message);
     }
-
-    alert('로그인 성공');
-    return cb();
+    const token = data.token;
+    localStorage.setItem('authorization', `Bearer ${token}`);
+    return true;
   } catch (e) {
     console.log(e);
     alert(e);
@@ -41,6 +38,7 @@ async function signIn(email: string, password: string, cb: () => Promise<any>) {
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -72,21 +70,20 @@ export default function SignIn() {
         <br />
         <button
           onClick={async (e) => {
-            e.preventDefault(); // 폼 기본 동작 방지
-            const { name, nickname, phoneNumber, createdAt, detective } =
-              await signIn(email, password, getUserInfo);
-            dispatch(
-              setUserInfo({
-                name,
-                email,
-                nickname,
-                phoneNumber,
-                createdAt,
-                detective,
-              })
-            );
-            // redirection : home
-            router.push('/');
+            try {
+              e.preventDefault(); // 폼 기본 동작 방지
+              const result = await signIn(email, password);
+              if (result) {
+                const token = localStorage.getItem('authorization');
+                if (!token) return;
+                const userInfo = (await getUserInfo(token)) as UserInfoState;
+                dispatch(setUserInfo({ ...userInfo }));
+                router.push('/');
+              }
+            } catch (error) {
+              alert(error);
+              console.log(error);
+            }
           }}
           className="btn"
         >

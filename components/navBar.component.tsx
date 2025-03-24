@@ -4,36 +4,36 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearUserInfo, setUserInfo } from '../features/userInfoSlice';
+import getUserInfo from '../utils/getUserInfo';
 
 async function logout() {
-  const url = process.env.BASE_URL;
-  const path = process.env.LOGOUT;
-
   try {
-    const response = await fetch(`${url}/auth/logout`, {
-      method: 'POST',
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      throw new Error('서버 요청 실패');
-    }
-
-    const data = await response.json();
-    if (!data.success) {
-      throw new Error('로그아웃 실패');
-    }
-
-    alert('로그아웃 완료');
+    localStorage.removeItem('authorization');
   } catch (e) {
     alert(e);
   }
 }
 
 const NavBar = () => {
-  const router = useRouter();
   const user = useSelector((state: RootState) => state.userInfo);
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [existingUser, setExistingUser] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('authorization');
+    if (!token) return;
+    const handleFetchUser = async () => {
+      getUserInfo(token).then((data) => {
+        if (data) {
+          dispatch(setUserInfo({ ...data }));
+        }
+      });
+    };
+    handleFetchUser();
+  }, []);
 
   useEffect(
     () => (user.name ? setExistingUser(true) : setExistingUser(false)),
@@ -42,29 +42,39 @@ const NavBar = () => {
 
   return (
     <div className="navBar">
-      <span>
-        <Link href={'/'}>홈</Link>
+      <span className="leftBtn">
+        <span>
+          <Link href={'/'}>홈</Link>
+        </span>
+        <span>목록1</span>
+        <span>목록2</span>
       </span>
-      <span>목록1</span>
-      <span>목록2</span>
       <span className="rightBtn">
-        <Link href={'./sign-in'}>Login</Link>
-      </span>
-      <span
-        className="dashboardBtn"
-        style={{ display: existingUser ? 'block' : 'none' }}
-      >
-        <Link href={'./dashboard'}>Dashboard</Link>
-      </span>
-      <span>
-        <button
-          onClick={() => {
-            logout();
-            router.push('./');
+        <span
+          style={{
+            display: existingUser ? 'none' : 'block',
           }}
         >
-          logout
-        </button>
+          <Link href={'/sign-in'}>Login</Link>
+        </span>
+        <span
+          className="dashboardBtn"
+          style={{ display: existingUser ? 'block' : 'none' }}
+        >
+          <Link href={'/dashboard'}>{user.nickname}</Link>
+        </span>
+        <span>
+          <button
+            style={{ display: existingUser ? 'block' : 'none' }}
+            onClick={() => {
+              logout();
+              dispatch(clearUserInfo());
+              router.push('/');
+            }}
+          >
+            logout
+          </button>
+        </span>
       </span>
     </div>
   );

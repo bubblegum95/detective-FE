@@ -1,13 +1,19 @@
-const useDebounce = (
-  password: any,
-  deley: number,
-  handler: (password: any) => void
-) => {
-  const timeID = setTimeout(() => {
-    handler(password);
-  }, deley);
+'use client';
 
-  return () => clearTimeout(timeID);
-};
+import { useEffect, useState } from 'react';
 
-export default useDebounce;
+export default function useDebounce<V>(value: V, deley: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedValue(value);
+    }, deley);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [value, deley]);
+
+  return debouncedValue;
+}

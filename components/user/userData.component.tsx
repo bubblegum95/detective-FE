@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import UserInfo from './userInfo.component';
 import UpdateUserInfo from './updateUserInfo.component';
+import UserInfo from './userInfo.component';
 
-const MyPage = () => {
+const UserData = () => {
   const [toUpdate, setToUpdate] = useState(false);
   const [btnName, setBtnName] = useState('내정보 수정하기');
 
@@ -38,4 +38,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default UserData;
