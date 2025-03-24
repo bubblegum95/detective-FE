@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userInfoSlice from './features/userInfoSlice';
+import socketSlice from './features/socketSlice';
 
 export const store = configureStore({
   reducer: {
     userInfo: userInfoSlice.reducer,
+    socket: socketSlice.reducer,
   },
 });
 

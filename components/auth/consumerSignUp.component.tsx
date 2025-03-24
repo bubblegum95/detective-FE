@@ -1,20 +1,19 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  comparePassword,
-  numberVelidationCheck,
-  passwordEngCheck,
-  passwordLengthCheck,
-  passwordNumSpcCheck,
-} from '../hooks/useValidationCheck';
-import useDebounce from '../hooks/useDebounce';
-import foundEmail from '../hooks/useFoundEmail';
-import SignUpProps from '../types/signUpProps.interface';
-import { signUp } from '../hooks/useSignUp';
+import React, { memo, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SignUpProps from '../../types/signUpProps.interface';
+import useDebounce from '../../hooks/useDebounce';
+import foundEmail from '../../utils/foundEmail';
+import { signUp } from '../../utils/signUp';
+import {
+  checkPhoneNumber,
+  comparePassword,
+  verifyPassword,
+} from '../../utils/validationCheck';
 
-export default function ConsumerSignUp({ isActive }: SignUpProps) {
+const ConsumerSignUp = ({ isActive }: SignUpProps) => {
+  const router = useRouter();
   const [formState, setFormState] = useState<{ [key: string]: any }>({
     name: '',
     email: '',
@@ -23,6 +22,7 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
     password: '',
     passwordConfirm: '',
   });
+  const debouncedPassword = useDebounce(formState.password, 500);
 
   const [emailState, setEmailState] = useState<{ [key: string]: any }>({
     isAvailable: false,
@@ -34,37 +34,19 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
     message: '',
   });
 
-  const [passwordState, setPasswordState] = useState<{ [key: string]: any }>({
+  const [passwordState, setPasswordState] = useState<Record<string, boolean>>({
     useEng: false,
-    useEngMsg: '',
     useNum: false,
-    useNumMsg: '',
     adjustLen: false,
-    adjustLenMsg: '',
   });
 
-  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
-  const [pwConfirmState, setPwConfirmState] = useState<{ [key: string]: any }>({
+  const [passwordErrors, setPasswordErrors] = useState<Array<string>>([]);
+  const [pwConfirmState, setPwConfirmState] = useState<
+    Record<string, boolean | string>
+  >({
     isAvailable: false,
     message: '',
   });
-
-  const handlePasswordValiCheck = useCallback((password: string): void => {
-    const enCheck = passwordEngCheck(password);
-    enCheck
-      ? setPasswordState((pre) => ({ ...pre, useEng: true }))
-      : setPasswordState((pre) => ({ ...pre, useEng: false }));
-
-    const numCheck = passwordNumSpcCheck(password);
-    numCheck
-      ? setPasswordState((pre) => ({ ...pre, useNum: true }))
-      : setPasswordState((pre) => ({ ...pre, useNum: false }));
-
-    const lengthCheck = passwordLengthCheck(password);
-    lengthCheck
-      ? setPasswordState((pre) => ({ ...pre, adjustLen: true }))
-      : setPasswordState((pre) => ({ ...pre, adjustLen: false }));
-  }, []);
 
   function updateForm(key: string, value: any): void {
     setFormState((pre) => ({ ...pre, [key]: value }));
@@ -75,25 +57,12 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
       updateForm(input, e.target.value);
     };
 
-  function validatePassword(password: string) {
-    const errors = [];
-    if (!passwordEngCheck(password)) errors.push('영어 소문자 / 대문자');
-    if (!passwordNumSpcCheck(password)) errors.push('숫자 / 특수문자');
-    if (!passwordLengthCheck(password)) errors.push('8 ~ 16자');
-    return errors;
-  }
-
-  useEffect(() => {
-    const errors = validatePassword(formState.password);
-    setPasswordErrors(errors);
-  }, [formState.password]);
-
   useEffect(() => {
     setEmailState({ isAvailable: false, message: '이메일 검증 미완료' });
   }, [formState.email]);
 
   useEffect(() => {
-    const isCorrectPhoneNum = numberVelidationCheck(formState.phoneNumber);
+    const isCorrectPhoneNum = checkPhoneNumber(formState.phoneNumber);
     setPhoneState((pre) => ({ ...pre, isAvailable: isCorrectPhoneNum }));
   }, [formState.phoneNumber]);
 
@@ -104,13 +73,11 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
   }, [phoneState.isAvailable]);
 
   useEffect(() => {
-    const cleanUp = useDebounce(
-      formState.password,
-      500,
-      handlePasswordValiCheck
-    );
-    return cleanUp;
-  }, [formState.password]);
+    const { useEng, useNum, adjustLen, errors } =
+      verifyPassword(debouncedPassword);
+    setPasswordState({ useEng, useNum, adjustLen });
+    setPasswordErrors(errors);
+  }, [debouncedPassword]);
 
   useEffect(() => {
     const { isCompared, comparedMsg } = comparePassword(
@@ -227,6 +194,8 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
               'http://127.0.0.1:3300/auth/signup/consumer',
               formState
             );
+            // redirection
+            router.push('/sign-in');
           }}
         >
           submit
@@ -234,4 +203,6 @@ export default function ConsumerSignUp({ isActive }: SignUpProps) {
       </form>
     </div>
   );
-}
+};
+
+export default ConsumerSignUp;

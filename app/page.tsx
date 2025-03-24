@@ -1,5 +1,5 @@
-import AreaList from '../components/areaList.component';
-import SpecialtyList from '../components/specialtyList.component';
+import AreaList from '../components/home/areaList.component';
+import SpecialtyList from '../components/home/specialtyList.component';
 
 export default function Home() {
   return (
