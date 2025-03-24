@@ -86,8 +86,8 @@ const Detectives = () => {
   return (
     <div>
       {detectives.map((detective) => (
-        <div key={detective.id}>
-          {detective.user.name} {detective.subject} {detective.office?.address}
+        <div key={detective.id} className="detectiveItem">
+          {detective.user.name} {detective.subject}
         </div>
       ))}
       <div>
