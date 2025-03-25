@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userInfoSlice from './features/userInfoSlice';
-import socketSlice from './features/socketSlice';
+import userInfoSlice from './src/features/userInfoSlice';
+import socketSlice from './src/features/socketSlice';
 
 export const store = configureStore({
   reducer: {
