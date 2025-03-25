@@ -1,20 +1,20 @@
 {
-  "name": "detective-front",
+  "name": "detective_fe",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://127.0.0.1:3300",
   "scripts": {
-    "dev": "NODE_ENV=local next dev --turbopack",
+    "dev": "NODE_ENV=local next dev --turbopack -p 4000",
     "build": "NODE_ENV=production next build",
-    "start": "NODE_ENV=production next start",
+    "start": "NODE_ENV=production next start -p 4000",
     "lint": "next lint"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
     "cookies-next": "^5.1.0",
-    "next": "15.1.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "^15.2.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.8.1",
