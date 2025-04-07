@@ -25,12 +25,13 @@ const Chats = () => {
 
   useEffect(() => {
     if (!selectedRoom) return;
+
     setIsOpen(true);
+    join(selectedRoom);
     const previousRoom = selectedRoom;
 
     return () => {
       leave(previousRoom);
-      join(selectedRoom);
     };
   }, [selectedRoom]);
 

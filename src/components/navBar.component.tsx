@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useUserInfo } from '../context/userInfo.provider';
-import getUserInfo from '../utils/getUserInfo';
+import getParcialUserInfo from '../utils/getParcialUserInfo';
 
 async function logout() {
   try {
@@ -18,7 +18,7 @@ const NavBar = () => {
   const { userInfo, setUserInfo } = useUserInfo();
   const handleSetUserInfo = useCallback(async (token: string) => {
     if (token) {
-      const data = await getUserInfo(token);
+      const data = await getParcialUserInfo(token);
       setUserInfo(data);
     }
   }, []);

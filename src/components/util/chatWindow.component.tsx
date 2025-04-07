@@ -1,7 +1,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Participant, Room, useChat } from '../../context/chat.provider';
 import styles from '../../styles/ChatWindow.module.css';
-import { timeStamp } from 'console';
 
 interface ChatWindowProps {
   roomId: Room['id'];
@@ -90,7 +89,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       // 3. 내부의 notRead span 찾아서 텍스트 수정
       const notReadSpan = bulloon.querySelector('.notRead');
       if (notReadSpan) {
-        notReadSpan.textContent = newNotRead.length.toString();
+        const length = newNotRead.length.toString();
+        if (length === '0') return;
+        notReadSpan.textContent = length;
       }
     },
     []
@@ -170,8 +171,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
             if (!messageId) return;
 
             const notRead = el.dataset.notRead?.split(',');
-            if (notRead?.includes(me.toString())) {
-              readMessage(+messageId, me);
+            if (notRead && notRead.includes(me.toString())) {
+              readMessage(+messageId, +me);
             }
           }
         });
@@ -179,8 +180,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       { threshold: 1.0 }
     );
 
-    messageElements.forEach((el) => observer.observe(el));
-  }, []);
+    messageElements.forEach((el) => {
+      observer.observe(el);
+    });
+  }, [me, chatContainer.current]);
 
   useEffect(() => {
     console.log('update!', updated);

@@ -111,6 +111,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const join = useCallback(
     (roomId: number) => {
+      console.log('join with:', roomId);
       socket?.emit('join', { roomId });
     },
     [socket]
@@ -141,6 +142,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const readMessage = useCallback(
     (id: Message['id'], reader: Participant['id']) => {
+      console.log('update read message!', id, reader);
       socket?.emit('readMessage', { id, reader });
     },
     [socket]
