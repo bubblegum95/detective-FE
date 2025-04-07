@@ -8,7 +8,6 @@ export async function getCategories() {
   const url = process.env.BASE_URL;
   const req = await fetch(`${url}/category`);
   const res = await req.json();
-  console.log(res.data);
   return res.data;
 }
 
@@ -27,9 +26,9 @@ const SpecialtyList = () => {
   return (
     <div>
       <div>
-        <h1 className="listTitle">전문분야</h1>
+        <h1 className="title">전문분야</h1>
       </div>
-      <div className="specialtykList list">
+      <div className="specialty list">
         {categories?.map((category) => (
           <span
             key={category.id}

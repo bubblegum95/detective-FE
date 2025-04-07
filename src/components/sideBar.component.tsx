@@ -1,7 +1,9 @@
 'use client';
 import Link from 'next/link';
+import { memo } from 'react';
 
 const SideBar = () => {
+  console.log('side bar component...');
   return (
     <div className="sideBar">
       <div>
@@ -20,4 +22,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default memo(SideBar);
