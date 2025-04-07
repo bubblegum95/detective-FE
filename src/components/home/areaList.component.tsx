@@ -19,9 +19,9 @@ const AreaList = () => {
   return (
     <div>
       <div>
-        <h1 className="listTitle">지역</h1>
+        <h1 className="title">지역</h1>
       </div>
-      <div className="areaList list">
+      <div className="regions list">
         {areas.map((area) => (
           <span
             key={area.id}

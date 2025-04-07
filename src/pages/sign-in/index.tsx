@@ -2,44 +2,12 @@
 
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/navigation';
-import getUserInfo from '../../utils/getUserInfo';
-import { UserInfoState } from '../../types/userInfoState.interface';
-import { setUserInfo } from '../../features/userInfoSlice';
-
-async function signIn(email: string, password: string) {
-  try {
-    const url = process.env.BASE_URL;
-    const path = process.env.SIGN_IN;
-    const response = await fetch(`${url}/auth/signin`, {
-      method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error('서버 응답 에러');
-    }
-
-    const data = await response.json();
-    if (!data.success) {
-      throw new Error(data.message);
-    }
-    const token = data.token;
-    localStorage.setItem('authorization', `Bearer ${token}`);
-    return true;
-  } catch (e) {
-    console.log(e);
-    alert(e);
-  }
-}
+import { useRouter } from 'next/router';
+import { signIn } from '../../utils/signIn';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
-  const dispatch = useDispatch();
   const router = useRouter();
 
   return (
@@ -76,8 +44,6 @@ export default function SignIn() {
               if (result) {
                 const token = localStorage.getItem('authorization');
                 if (!token) return;
-                const userInfo = (await getUserInfo(token)) as UserInfoState;
-                dispatch(setUserInfo({ ...userInfo }));
                 router.push('/');
               }
             } catch (error) {

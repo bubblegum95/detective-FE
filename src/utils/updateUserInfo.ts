@@ -27,7 +27,7 @@ export async function fetchUserInfo(
         break;
     }
 
-    const response = await fetch(`${url}/user/update?type=${type}`, {
+    const response = await fetch(`${url}/user?type=${type}`, {
       method: 'PATCH',
       headers: {
         authorization: `${token}`,

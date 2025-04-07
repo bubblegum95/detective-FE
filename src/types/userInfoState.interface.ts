@@ -1,26 +1,25 @@
-export interface UserInfoState {
+export interface Profile {
+  id: number;
+  path: string;
+}
+
+export interface Role {
+  id: number;
+  name: string;
+}
+
+export interface User {
   name: string;
   email: string;
   nickname: string;
   phoneNumber: string;
   createdAt: string;
-  profile?: ProfileState | null;
-  detective?: {} | null;
+  profile: Profile;
 }
 
-export interface ProfileState {
-  id: number;
-  path: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
+export interface UserInfoState {
   nickname: string;
-  phoneNumber: string;
+  role: Role;
 }
 
 export interface License {
@@ -67,7 +66,7 @@ export interface Detective {
   intro: string | null;
   user: Partial<User>;
   office: Partial<Office> | null;
-  profile: Partial<ProfileState> | null;
+  profile: Partial<Profile> | null;
   licenses: Array<Partial<License>>;
   careers: Array<Partial<Career>>;
   detectiveCategories: Array<Category>;

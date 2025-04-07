@@ -87,7 +87,7 @@ const Detectives = () => {
       {detectives.map((detective) => (
         <div
           key={detective.id}
-          className="detectiveItem"
+          className="detectiveItems"
           onClick={() => {
             router.push(`/detectives/${detective.id}`);
           }}
