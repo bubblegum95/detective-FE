@@ -2,10 +2,11 @@
 
 import SideBar from '../../../components/sideBar.component';
 import UserData from '../../../components/user/userData.component';
+import dashboardStyle from '../../../styles/dashboard.module.css';
 
 const Profile = () => {
   return (
-    <div className="profile dashboard">
+    <div className={dashboardStyle.dashboard}>
       <div>
         <SideBar />
       </div>

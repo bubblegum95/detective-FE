@@ -65,7 +65,7 @@ const Detectives = () => {
           page,
           items.current,
           'category',
-          Number(areaId)
+          Number(categoryId)
         );
         dispatch({ type: actionTypes.SET_DETECTIVES, payload: data });
         dispatch({ type: actionTypes.SET_TOTAL, payload: total });
@@ -92,12 +92,10 @@ const Detectives = () => {
             router.push(`/detectives/${detective.id}`);
           }}
         >
-          <div>
-            {detective.user.name} {detective.subject}
-          </div>
-          <div>
-            {detective.office?.name} {detective.office?.address}
-          </div>
+          <div>{detective.user.name}</div>
+          <div>{detective.subject}</div>
+          <div>{detective.office?.name}</div>
+          <div>{detective.office?.address}</div>
         </div>
       ))}
       <div>

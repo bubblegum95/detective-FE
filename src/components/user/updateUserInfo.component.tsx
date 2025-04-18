@@ -8,6 +8,8 @@ import {
   verifyPassword,
   comparePassword,
 } from '../../utils/validationCheck';
+import styles from '../../styles/UpdateUserInfo.module.css';
+import Image from 'next/image';
 
 const UpdateUserInfo = () => {
   const defaultImage =
@@ -91,11 +93,17 @@ const UpdateUserInfo = () => {
   }, [debouncedPwConfirm]);
 
   return (
-    <div className="userInfo">
-      <div className="userInfoData">
-        <img src={loadedFile ? loadedFile : defaultImage} width={200} />
+    <div className={styles.userInfo}>
+      <div className={styles.userImage}>
+        <Image
+          src={loadedFile ? loadedFile : defaultImage}
+          width={250}
+          height={250}
+          alt=""
+          layout="fixed"
+          className={styles.image}
+        />
         <div>
-          <legend>이미지 업로드</legend>
           <input type="file" accept="image/*" onChange={handleFileUpload} />
           <button
             className="uploadBtn"
@@ -104,8 +112,10 @@ const UpdateUserInfo = () => {
             수정
           </button>
         </div>
-        <div className="key-value" key={'nickname'}>
-          <legend>닉네임</legend>
+      </div>
+      <div className={styles.userInfoData}>
+        <div className={styles.nicknameSection} key={'nickname'}>
+          <label>닉네임</label>
           <input
             type="text"
             placeholder="nickname"
@@ -121,6 +131,7 @@ const UpdateUserInfo = () => {
           </button>
           <div>{nicknameCheckMsg}</div>
         </div>
+
         <div className="key-value" key={'password'}>
           <fieldset>
             <legend>비밀번호 변경</legend>
@@ -140,7 +151,7 @@ const UpdateUserInfo = () => {
             />
             <div>
               {pwErrMsg.map((err, index) => (
-                <div key={index}>{err}</div>
+                <div key={index}>❌ {err}</div>
               ))}
             </div>
             <legend>변경하실 비밀번호 재확인</legend>

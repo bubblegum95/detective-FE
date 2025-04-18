@@ -9,20 +9,20 @@ export interface FloatingChatProps {
 
 const FloatingChat: React.FC<FloatingChatProps> = ({ email }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { socket, selectedRoom, invite, join, leave } = useChat();
-
-  if (!socket) return;
+  const { socket, selectedRoom, me, invite, join, leave } = useChat();
 
   useEffect(() => {
     if (!selectedRoom) return;
     setIsOpen(true);
+    join(selectedRoom);
     const previousRoom = selectedRoom;
 
     return () => {
       leave(previousRoom);
-      join(selectedRoom);
     };
   }, [selectedRoom]);
+
+  if (!socket) return;
 
   return (
     <div className={styles.floatingChat}>
@@ -38,8 +38,12 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ email }) => {
       </button>
 
       {/* 채팅 창 */}
-      {isOpen && selectedRoom && (
-        <ChatWindow roomId={selectedRoom} onClose={() => setIsOpen(false)} />
+      {isOpen && selectedRoom && me && (
+        <ChatWindow
+          roomId={selectedRoom}
+          me={me}
+          onClose={() => setIsOpen(false)}
+        />
       )}
     </div>
   );

@@ -4,10 +4,9 @@ import NavBar from './navBar.component';
 const Header = () => {
   const MemoizedNavBar = memo(NavBar);
   return (
-    <div className="header">
-      {/* <h1>head space</h1> */}
+    <header className="header">
       <MemoizedNavBar />
-    </div>
+    </header>
   );
 };
 

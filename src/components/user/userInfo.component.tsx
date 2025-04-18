@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { User } from '../../types/userInfoState.interface';
 import { useEffect, useState } from 'react';
 import getUserInfo from '../../utils/getUserInfo';
+import styles from '../../styles/UserInfo.module.css';
 
 const UserInfo = () => {
   const [user, setUser] = useState<User>({
@@ -34,35 +35,36 @@ const UserInfo = () => {
     : defaultImage;
 
   return (
-    <div className="userInfo">
-      <div className="image">
+    <div className={styles.userInfo}>
+      <div>
         <Image
           src={userImage}
           alt="user image"
           priority={false}
-          layout="intrinsic"
-          width={300}
-          height={0}
+          layout="fixed"
+          width={250}
+          height={250}
+          className={styles.image}
         />
       </div>
-      <div className="userInfoData">
-        <div className="key-value" key={'name'}>
+      <div className={styles.userInfoData}>
+        <div key={'name'}>
           <ol>이름</ol>
           <ol>{user.name}</ol>
         </div>
-        <div className="key-value" key={'email'}>
+        <div key={'email'}>
           <ol>이메일</ol>
           <ol>{user.email}</ol>
         </div>
-        <div className="key-value" key={'nickname'}>
+        <div key={'nickname'}>
           <ol>닉네임</ol>
           <ol>{user.nickname}</ol>
         </div>
-        <div className="key-value" key={'phoneNumber'}>
+        <div key={'phoneNumber'}>
           <ol>연락처</ol>
           <ol>{user.phoneNumber}</ol>
         </div>
-        <div className="key-value" key={'createdAt'}>
+        <div key={'createdAt'}>
           <ol>회원가입일</ol>
           <ol>{user.createdAt}</ol>
         </div>

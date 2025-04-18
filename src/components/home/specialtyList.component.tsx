@@ -3,13 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Category } from '../../types/userInfoState.interface';
 import { useRouter } from 'next/router';
-
-export async function getCategories() {
-  const url = process.env.BASE_URL;
-  const req = await fetch(`${url}/category`);
-  const res = await req.json();
-  return res.data;
-}
+import { getCategories } from '../../utils/getCategories';
 
 const SpecialtyList = () => {
   const router = useRouter();

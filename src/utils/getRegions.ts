@@ -1,3 +1,5 @@
+import { Region } from '../types/userInfoState.interface';
+
 export async function getRegions() {
   try {
     const url = process.env.BASE_URL;
@@ -8,6 +10,8 @@ export async function getRegions() {
       throw new Error(res.error);
     }
     console.log(res.data);
-    return res.data;
-  } catch (error) {}
+    return res.data as Region[];
+  } catch (error) {
+    return [];
+  }
 }

@@ -1,6 +1,12 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Participant, Room, useChat } from '../../context/chat.provider';
+import {
+  Message,
+  Participant,
+  Room,
+  useChat,
+} from '../../context/chat.provider';
 import styles from '../../styles/ChatWindow.module.css';
+import { User } from '../../types/userInfoState.interface';
 
 interface ChatWindowProps {
   roomId: Room['id'];
@@ -35,11 +41,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   // 말풍선 생성
   const createSpeechBulloon = useCallback(
     (
-      id: number,
-      sender: string,
-      senderId: number,
-      content: string,
-      timestamp: string,
+      id: Message['id'],
+      sender: User['nickname'],
+      senderId: Participant['id'],
+      content: Message['content'],
+      timestamp: Message['timestamp'],
       notRead: Array<number>
     ) => {
       const bulloon = document.createElement('div');
@@ -61,7 +67,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       contentSpan.className = styles.content;
 
       const timestampSpan = document.createElement('span');
-      timestampSpan.textContent = timestamp;
+      timestampSpan.textContent = new Date(timestamp).toLocaleString();
       timestampSpan.className = styles.timestamp;
 
       const notReadSpan = document.createElement('span');
@@ -101,9 +107,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   const handleReceiveMessage = useCallback(() => {
     if (receiveNow) {
       const { id, sender, senderId, content, timestamp, notRead } = receiveNow;
+      if (!sender.user) return;
+
       const newBulloon = createSpeechBulloon(
         id,
-        sender,
+        sender.user?.nickname,
         senderId,
         content,
         timestamp,
@@ -114,6 +122,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
     }
   }, [receiveNow, chatContainer.current]);
 
+  // 페이지네이션 feat scroll
   const handleScroll = useCallback(() => {
     if (chatContainer.current?.scrollTop === 0 && messages) {
       console.log('채팅창이 맨 위에 도달!');
@@ -129,9 +138,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
     messages &&
       chatContainer.current &&
       messages.map(({ id, content, sender, senderId, timestamp, notRead }) => {
+        if (!sender.user) return;
         const bulloon = createSpeechBulloon(
           id,
-          sender,
+          sender.user.nickname,
           senderId,
           content,
           timestamp,
@@ -209,20 +219,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
         <div ref={chatBottom} />
       </div>
       <div className={styles.inputContainer}>
-        <input
-          type="text"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className={styles.inputField}
-          autoFocus
-          placeholder="message"
-        />
-        <button onClick={handleSendMessage} className={styles.sendButton}>
-          Send
-        </button>
+        <form action="">
+          <input
+            type="text"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className={styles.inputField}
+            autoFocus
+            placeholder="message"
+          />
+          <button onClick={handleSendMessage} className={styles.sendButton}>
+            Send
+          </button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default memo(ChatWindow);
+export default ChatWindow;

@@ -1,11 +1,11 @@
 'use client';
 import { createContext, useContext, useState } from 'react';
+import { Role } from '../types/userInfoState.interface';
 
 export interface UserInfoType {
   id: number;
-  name: string;
   nickname: string;
-  role: 'client' | 'employee' | 'employer';
+  role: Role;
 }
 
 export interface UserInfoContextType {

@@ -1,0 +1,22 @@
+.userInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.image {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userInfoData {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.userInfoData > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

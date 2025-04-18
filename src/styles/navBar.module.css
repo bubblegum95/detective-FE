@@ -15,11 +15,16 @@
 }
 
 .navBar > span > span {
-  background-color: black;
-  color: white;
-  border: 1px solid black;
-  border-radius: 13%;
+  /* background-color: black; */
+  color: black;
+  border: 0px none;
+  border-radius: 10%;
   padding: 5px;
+}
+
+.logout {
+  border: 0px none;
+  height: 20px;
 }
 
 .rightBtn {

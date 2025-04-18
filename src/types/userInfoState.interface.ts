@@ -5,7 +5,7 @@ export interface Profile {
 
 export interface Role {
   id: number;
-  name: string;
+  name: 'client' | 'employee' | 'employer' | 'admin';
 }
 
 export interface User {
@@ -24,16 +24,18 @@ export interface UserInfoState {
 
 export interface License {
   id: number;
-  name: string;
+  title: string;
+  issuedAt: string;
+  issuedBy: string;
 }
 
 export interface Career {
   id: number;
-  startDate: string;
-  endDate: string;
-  businessDetails: string;
-  corporateName: string;
+  company: string;
   position: string;
+  job: string;
+  start: string;
+  end: string;
 }
 
 export interface Office {
@@ -64,12 +66,60 @@ export interface Detective {
   id: number;
   subject: string | null;
   intro: string | null;
-  user: Partial<User>;
+  user: User;
   office: Partial<Office> | null;
   profile: Partial<Profile> | null;
-  licenses: Array<Partial<License>>;
-  careers: Array<Partial<Career>>;
+  licenses: Array<License> | null;
+  careers: Array<Career> | null;
   detectiveCategories: Array<Category>;
   detectiveEquipments: Array<Equipment>;
   detectiveRegions: Array<Region>;
+}
+
+export interface DetectiveCategory {
+  id: number;
+  category: Category;
+  detective: Detective;
+}
+
+export interface DetectiveEquipment {
+  id: number;
+  equipment: Equipment;
+  detective: Detective;
+}
+
+export interface DetectiveRegion {
+  id: number;
+  region: Region;
+  detective: Detective;
+}
+
+export interface DetectiveProfile {
+  id: number;
+  subject: string | null;
+  intro: string | null;
+  office: Partial<Office> | null;
+  profile: Partial<Profile> | null;
+  licenses: Array<License>;
+  careers: Array<Career>;
+  detectiveCategories: Array<DetectiveCategory>;
+  detectiveEquipments: Array<DetectiveEquipment>;
+  detectiveRegions: Array<DetectiveRegion>;
+}
+
+export interface Review {
+  id: number;
+  comment: string;
+  reliability: number;
+  speed: number;
+  accuracy: number;
+  completion: number;
+  createdAt: string;
+  consumer: User;
+}
+
+export interface Wishlist {
+  id: number;
+  consumer: User;
+  detective: Detective;
 }

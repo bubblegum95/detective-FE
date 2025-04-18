@@ -4,7 +4,6 @@ export default async function getParcialUserInfo(token: string) {
       throw new Error('token이 없습니다.');
     }
     const url = process.env.BASE_URL;
-    const path = process.env.MY_PAGE;
     const response = await fetch(`${url}/user/partial`, {
       headers: {
         'Content-type': 'application/json',
@@ -17,7 +16,6 @@ export default async function getParcialUserInfo(token: string) {
       console.log(data.error);
       throw new Error(data.message);
     }
-
     return data.data;
   } catch (e) {
     console.log(e);

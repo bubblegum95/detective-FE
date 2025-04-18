@@ -8,10 +8,12 @@ import {
   useState,
 } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { User } from '../types/userInfoState.interface';
 
 export interface Room {
   id: number;
   name: string;
+  me: Participant['id'];
   createdAt: Date;
 }
 
@@ -19,7 +21,7 @@ export interface Message {
   id: number;
   type: any;
   content: string;
-  sender: string;
+  sender: Participant;
   senderId: Participant['id'];
   notRead: Array<Participant['id']>;
   timestamp: string;
@@ -32,19 +34,21 @@ export interface UpdatedMessage {
 
 export interface Participant {
   id: number;
+  user: User | undefined;
 }
 
 export interface RoomList {
   roomId: Room['id'];
   me: Participant['id'];
-  latestMessage: Message;
+  latestMessage: Message | undefined;
   participants: string[];
 }
 
 export interface ChatContextType {
   socket: Socket | null;
-  roomLists: RoomList[];
+  roomLists: { rooms: RoomList[]; total: number };
   selectedRoom: Room['id'] | null;
+  me: Participant['id'] | null;
   messages: Message[];
   receiveNow: Message | null;
   updated: UpdatedMessage | null;
@@ -67,8 +71,12 @@ export const ChatContext = createContext<ChatContextType | undefined>( // 전역
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [roomLists, setRoomLists] = useState<RoomList[]>([]);
+  const [roomLists, setRoomLists] = useState<{
+    rooms: RoomList[];
+    total: number;
+  }>({ rooms: [], total: 0 });
   const [selectedRoom, setSelectedRoom] = useState<Room['id'] | null>(null);
+  const [me, setMe] = useState<Participant['id'] | null>(null);
   const [messages, setMessages] = useState<Array<Message>>([]);
   const [receiveNow, setReceiveNow] = useState<Message | null>(null);
   const [updated, setUpdated] = useState<UpdatedMessage | null>(null);
@@ -111,7 +119,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const join = useCallback(
     (roomId: number) => {
-      console.log('join with:', roomId);
       socket?.emit('join', { roomId });
     },
     [socket]
@@ -142,7 +149,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const readMessage = useCallback(
     (id: Message['id'], reader: Participant['id']) => {
-      console.log('update read message!', id, reader);
       socket?.emit('readMessage', { id, reader });
     },
     [socket]
@@ -153,13 +159,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // Event Listener
-  socket?.on('rooms', (data: RoomList[]) => {
-    console.log('rooms: ', data);
+  socket?.on('rooms', (data: { rooms: RoomList[]; total: number }) => {
+    console.log('rooms: ', data.rooms);
     setRoomLists(data);
   });
 
-  socket?.on('room', (data: { roomId: number }) => {
+  socket?.on('room', (data: { roomId: number; me: number }) => {
     setSelectedRoom(data.roomId);
+    setMe(data.me);
   });
 
   socket?.on('messages', (data: { messages: Message[] }) => {
@@ -167,12 +174,10 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   socket?.on('receiveMessage', (data: Message) => {
-    console.log('receive: ', data);
     setReceiveNow(data);
   });
 
   socket?.on('updatedMessage', (data: UpdatedMessage) => {
-    console.log(data);
     setUpdated(data);
   });
 
@@ -186,6 +191,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         socket,
         roomLists,
         selectedRoom,
+        me,
         messages,
         receiveNow,
         updated,

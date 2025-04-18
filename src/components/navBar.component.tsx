@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useUserInfo } from '../context/userInfo.provider';
 import getParcialUserInfo from '../utils/getParcialUserInfo';
+import styles from '../styles/navBar.module.css';
 
 async function logout() {
   try {
@@ -31,15 +32,15 @@ const NavBar = () => {
   }, []);
 
   return (
-    <div className="navBar">
-      <span className="leftBtn">
+    <nav className={styles.navBar}>
+      <span className={styles.leftBtn}>
         <span>
           <Link href={'/'}>홈</Link>
         </span>
         <span>목록1</span>
         <span>목록2</span>
       </span>
-      <span className="rightBtn">
+      <span className={styles.rightBtn}>
         <span
           style={{
             display: userInfo ? 'none' : 'block',
@@ -48,13 +49,14 @@ const NavBar = () => {
           <Link href={'/sign-in'}>Login</Link>
         </span>
         <span
-          className="dashboardBtn"
+          className={styles.dashboardBtn}
           style={{ display: userInfo ? 'block' : 'none' }}
         >
           <Link href={'/dashboard'}>{userInfo?.nickname}</Link>
         </span>
         <span>
           <button
+            className={styles.logout}
             style={{ display: userInfo ? 'block' : 'none' }}
             onClick={() => {
               logout();
@@ -66,7 +68,7 @@ const NavBar = () => {
           </button>
         </span>
       </span>
-    </div>
+    </nav>
   );
 };
 

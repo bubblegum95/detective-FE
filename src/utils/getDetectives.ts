@@ -5,10 +5,12 @@ export async function fetchDetectives(
   value?: number
 ) {
   try {
+    console.log('key:', key, value);
     const base_url = process.env.BASE_URL;
     const path = 'detectives';
     let url;
     if (key && value) {
+      console.log;
       url = `${base_url}/${path}?page=${page}&limit=${limit}&key=${key}&value=${value}`;
     } else {
       url = `${base_url}/${path}?page=${page}&limit=${limit}`;

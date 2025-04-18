@@ -1,0 +1,15 @@
+.container {
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  border-radius: 10px;
+  border: 0px;
+  box-shadow: 5;
+  background-color: white;
+  color: black;
+  margin: 10px;
+}
+
+.content {
+  padding: 50px;
+}

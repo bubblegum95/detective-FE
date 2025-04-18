@@ -2,7 +2,6 @@ import type { AppProps } from 'next/app';
 import Header from '../components/header.component';
 import Footer from '../components/footer.component';
 import '../styles/globals.css';
-import '../styles/navBar.module.css';
 import { ChatProvider } from '../context/chat.provider';
 import { UserInfoProvider } from '../context/userInfo.provider';
 

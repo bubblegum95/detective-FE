@@ -1,0 +1,12 @@
+.sideBar {
+  position: sticky;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: start;
+}
+
+.sideBar > div > button {
+  width: auto;
+  height: 30px;
+}
