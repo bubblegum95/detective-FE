@@ -1,6 +1,5 @@
 export async function deleteWishlist(wishlistId: number) {
   try {
-    console.log(wishlistId);
     const token = localStorage.getItem('authorization');
     if (!token) return;
     const url = process.env.BASE_URL;
@@ -16,6 +15,6 @@ export async function deleteWishlist(wishlistId: number) {
       throw new Error(data.error);
     }
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 }

@@ -7,7 +7,6 @@ export async function getCategories() {
     const res = await req.json();
     return res.data as Category[];
   } catch (error) {
-    console.error(error);
     return [];
   }
 }

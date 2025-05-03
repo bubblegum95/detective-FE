@@ -1,35 +1,21 @@
 'use client';
 
-import React, { memo, useCallback, useState } from 'react';
-import ConsumerSignUp from '../../components/auth/consumerSignUp.component';
-import EmployeeSignUp from '../../components/auth/employeeSignUp.component';
-import EmployerSignUp from '../../components/auth/employerSignUp.component';
+import React, { memo } from 'react';
+import Link from 'next/link';
+import styles from '../../styles/signUp.module.css';
 
 const SignUp = () => {
-  const [activeState, setActiveState] = useState('consumer');
-  const MemosizedConsumer = memo(ConsumerSignUp);
-  const MemoizedEmployee = memo(EmployeeSignUp);
-  const MemoizedEmployer = memo(EmployerSignUp);
-
-  const handleActiveState = useCallback(
-    (active: string) => () => {
-      setActiveState(active);
-    },
-    []
-  );
-
   return (
-    <div className="signUpForms">
-      <span>
-        <button onClick={handleActiveState('consumer')}>의뢰인 회원가입</button>
-        <button onClick={handleActiveState('employee')}>
-          탐정 직원 회원가입
-        </button>
-        <button onClick={handleActiveState('employer')}>사장님 회원가입</button>
-      </span>
-      <MemosizedConsumer isActive={activeState === 'consumer'} />
-      <MemoizedEmployee isActive={activeState === 'employee'} />
-      <MemoizedEmployer isActive={activeState === 'employer'} />
+    <div className={styles.signUpLinks}>
+      <Link href={'sign-up/consumer'} className={styles.signUpLink}>
+        <div>의뢰인 회원가입</div>
+      </Link>
+      <Link href={'/sign-up/employee'} className={styles.signUpLink}>
+        <div>탐정 직원 회원가입</div>
+      </Link>
+      <Link href={'/sign-up/employer'} className={styles.signUpLink}>
+        <div>탐정 사무소 회원가입</div>
+      </Link>
     </div>
   );
 };

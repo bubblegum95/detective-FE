@@ -21,7 +21,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>();
   return (
-    <div>
+    <div style={{ width: '350px' }}>
       <Image
         src={selected}
         alt=""
@@ -32,7 +32,15 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
         style={{ objectFit: 'cover', borderRadius: '50%' }}
       />
 
-      <button onClick={() => setIsOpen(!isOpen)}>수정하기</button>
+      <button
+        style={{ cursor: 'pointer' }}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsOpen(!isOpen);
+        }}
+      >
+        수정하기
+      </button>
 
       {isOpen && (
         <div>

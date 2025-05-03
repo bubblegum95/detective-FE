@@ -13,7 +13,11 @@ export default function App({ Component, pageProps }: AppProps) {
           <div className="containerHeader" id="header">
             <Header />
           </div>
-          <div className="containerContent" id="content">
+          <div
+            className="containerContent"
+            id="content"
+            style={{ width: '100%' }}
+          >
             <Component {...pageProps} />
           </div>
           <div className="containerFooter" id="footer">

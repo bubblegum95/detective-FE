@@ -25,7 +25,6 @@ export async function getConsultations(
 
     return { consultations, total };
   } catch (error) {
-    console.error(error);
     return { consultations: [], total: 0 };
   }
 }

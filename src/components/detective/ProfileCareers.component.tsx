@@ -56,7 +56,7 @@ export const ProfileCareer: React.FC<ProfileCareerProps> = ({ career }) => {
         />
         <label htmlFor="">종료일</label>
         <input
-          type="data"
+          type="date"
           value={careerForm.end}
           name="endDate"
           onChange={handleChange}
@@ -152,8 +152,10 @@ export const CreateCareer = () => {
               onChange={handleChange}
             />
             <button
-              onClick={() => {
-                createCareer(carear);
+              onClick={async (e) => {
+                e.preventDefault();
+                const result = await createCareer(carear);
+                if (result) alert('경력을 추가하였습니다.');
               }}
             >
               생성하기

@@ -19,7 +19,6 @@ export async function searchIsWish(detectiveId: number) {
 
     return data.data as Wishlist;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }

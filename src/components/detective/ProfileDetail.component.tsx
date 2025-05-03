@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { Detective } from '../../types/userInfoState.interface';
+import styles from '../../styles/DetectiveProfile.module.css';
 
 export interface DetectiveInfo {
   subject: Detective['subject'] | null;
@@ -57,7 +58,7 @@ const DetectiveSubject: React.FC<DetectiveInfo> = ({ subject, intro }) => {
   );
 
   return (
-    <div>
+    <div className={styles.detectiveDetailIntro}>
       <form action="">
         <h3>
           <label htmlFor="">간단소개</label>
@@ -68,6 +69,7 @@ const DetectiveSubject: React.FC<DetectiveInfo> = ({ subject, intro }) => {
           onChange={(e) =>
             setInfo((prev) => ({ ...prev, subject: e.target.value }))
           }
+          className={styles.detectiveSubjectInput}
         />
 
         <h3>
@@ -80,6 +82,7 @@ const DetectiveSubject: React.FC<DetectiveInfo> = ({ subject, intro }) => {
           onChange={(e) =>
             setInfo((prev) => ({ ...prev, intro: e.target.value }))
           }
+          className={styles.detectiveIntro}
         />
         <br />
         <button

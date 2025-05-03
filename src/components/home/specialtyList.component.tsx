@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Category } from '../../types/userInfoState.interface';
 import { useRouter } from 'next/router';
 import { getCategories } from '../../utils/getCategories';
+import styles from '../../styles/CategoriesRegions.module.css';
 
 const SpecialtyList = () => {
   const router = useRouter();
@@ -18,11 +19,11 @@ const SpecialtyList = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.searchKeyword}>
       <div>
-        <h1 className="title">전문분야</h1>
+        <h1 className={styles.title}>전문분야</h1>
       </div>
-      <div className="specialty list">
+      <div className={styles.lists}>
         {categories?.map((category) => (
           <span
             key={category.id}

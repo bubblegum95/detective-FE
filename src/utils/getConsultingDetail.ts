@@ -20,6 +20,6 @@ export async function getConsultingDetail(
     const result = data.data as Consultation;
     return result;
   } catch (error) {
-    console.error(error);
+    alert(error);
   }
 }

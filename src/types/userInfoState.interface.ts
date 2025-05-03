@@ -14,7 +14,7 @@ export interface User {
   nickname: string;
   phoneNumber: string;
   createdAt: string;
-  profile: Profile;
+  file: Profile;
 }
 
 export interface UserInfoState {
@@ -45,6 +45,9 @@ export interface Office {
   addressDetail: string;
   founded: string;
   phone: string;
+  businessNum: string;
+  employees?: Detective[];
+  businessFile: ImageFile;
 }
 
 export interface Category {
@@ -122,4 +125,9 @@ export interface Wishlist {
   id: number;
   consumer: User;
   detective: Detective;
+}
+
+export interface ImageFile {
+  id: number;
+  path: string;
 }

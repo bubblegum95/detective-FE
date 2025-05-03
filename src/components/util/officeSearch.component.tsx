@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import useDebounce from '../../hooks/useDebounce';
 import { searchOffice } from '../../utils/searchOffice';
+import styles from '../../styles/OfficeSearch.module.css';
 
 export interface Office {
   id: number;
@@ -35,7 +36,7 @@ const OfficeSearch: React.FC<OfficeSearchProps> = ({ onSelect }) => {
     <div>
       <input
         type="text"
-        className="officeInput"
+        className={styles.officeInput}
         placeholder="탐정소 이름 검색"
         value={officeInput}
         onChange={(e) => {
@@ -44,8 +45,8 @@ const OfficeSearch: React.FC<OfficeSearchProps> = ({ onSelect }) => {
         }}
         onBlur={() => setTimeout(() => setIsDropdownVisible(false), 200)}
       />
-      {isDropdownVisible && officeLists.length > 0 && (
-        <ul className="dropdown">
+      {isDropdownVisible && officeLists && (
+        <ul className={styles.dropdown}>
           {officeLists.map((office) => (
             <li
               key={office.id}
@@ -54,8 +55,12 @@ const OfficeSearch: React.FC<OfficeSearchProps> = ({ onSelect }) => {
                 setOfficeInput(office.name);
                 setIsDropdownVisible(false);
               }}
+              className={styles.list}
             >
-              {office.name}: {office.address} {office.addressDetail}
+              <div className={styles.officeName}>{office.name}</div>
+              <div className={styles.officeAddress}>
+                {office.address} {office.addressDetail}
+              </div>
             </li>
           ))}
         </ul>

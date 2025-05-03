@@ -1,10 +1,13 @@
-export default async function getUserInfo(token: string) {
+import { User } from '../types/userInfoState.interface';
+
+export default async function getUserInfo() {
   try {
+    const token = localStorage.getItem('authorization');
     if (!token) {
-      throw new Error('token이 없습니다.');
+      return;
     }
+
     const url = process.env.BASE_URL;
-    const path = process.env.MY_PAGE;
     const response = await fetch(`${url}/user`, {
       headers: {
         'Content-type': 'application/json',
@@ -14,12 +17,11 @@ export default async function getUserInfo(token: string) {
     const data = await response.json();
 
     if (!response.ok || !data.success) {
-      console.log(data.error);
       throw new Error(data.message);
     }
 
-    return data.data;
+    return data.data as User;
   } catch (e) {
-    console.log(e);
+    alert(e);
   }
 }

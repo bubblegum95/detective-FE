@@ -66,8 +66,10 @@ export const CreateLicense = () => {
               onChange={handleChange}
             />
             <button
-              onClick={() => {
-                createLicense(licenseForm);
+              onClick={async (e) => {
+                e.preventDefault();
+                const result = await createLicense(licenseForm);
+                if (result) alert('자격증을 추가하였습니다.');
               }}
             >
               추가하기
@@ -113,15 +115,17 @@ export const ProfileLicense: React.FC<ProfileLisenceProps> = ({ license }) => {
         />
         <div>
           <button
-            onClick={() => {
-              updateLicense(licenseForm);
+            onClick={async (e) => {
+              e.preventDefault();
+              await updateLicense(licenseForm);
             }}
           >
             수정하기
           </button>
           <button
-            onClick={(e) => {
-              deleteLicense(licenseForm.id);
+            onClick={async (e) => {
+              e.preventDefault();
+              await deleteLicense(licenseForm.id);
             }}
           >
             삭제하기

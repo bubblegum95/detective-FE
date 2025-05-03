@@ -27,7 +27,6 @@ const WishlistComponent: React.FC<WishlistProps> = ({ detectiveId, size }) => {
   const handleCreateWish = async () => {
     const result = await createWishlist(detectiveId);
     if (!result) return;
-    console.log();
     setIsWish(result.id);
   };
 
@@ -44,6 +43,7 @@ const WishlistComponent: React.FC<WishlistProps> = ({ detectiveId, size }) => {
           handleCreateWish();
         }
       }}
+      style={{ cursor: 'pointer' }}
     />
   );
 };

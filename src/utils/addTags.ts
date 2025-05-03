@@ -36,11 +36,9 @@ export async function addTag(
     if (!res.ok || !data.success) {
       throw new Error(data.error);
     }
-    console.log(data);
 
     return true;
   } catch (error) {
-    console.error(error);
     return false;
   }
 }

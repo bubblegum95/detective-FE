@@ -1,0 +1,26 @@
+.searchKeyword {
+  padding: 30px;
+}
+
+.title {
+}
+
+.lists {
+  display: flex;
+  gap: 5px;
+}
+
+.lists > span {
+  color: black;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.lists > span:hover {
+  border: 2px solid #0ff;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff;
+}

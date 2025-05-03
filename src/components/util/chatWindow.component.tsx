@@ -31,12 +31,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   const chatBottom = useRef<HTMLDivElement | null>(null);
 
   // 메시지 보내기
-  const handleSendMessage = useCallback(() => {
-    if (content.trim()) {
-      sendMessage(roomId, content);
-      setContent('');
-    }
-  }, [roomId, content, sendMessage]);
+  const handleSendMessage = useCallback(
+    (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      e.preventDefault();
+      if (content.trim()) {
+        sendMessage(roomId, content);
+        setContent('');
+      }
+    },
+    [roomId, content, sendMessage]
+  );
 
   // 말풍선 생성
   const createSpeechBulloon = useCallback(
@@ -54,7 +58,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       bulloon.dataset.messageId = id.toString();
       bulloon.dataset.notRead = notRead.join(',');
 
-      const senderDiv = document.createElement('div');
+      const senderDiv = document.createElement('p');
       senderDiv.className = styles.sender;
       if (senderId === me) {
         senderDiv.textContent = '나';
@@ -66,15 +70,23 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       contentSpan.textContent = content;
       contentSpan.className = styles.content;
 
-      const timestampSpan = document.createElement('span');
-      timestampSpan.textContent = new Date(timestamp).toLocaleString();
-      timestampSpan.className = styles.timestamp;
-
       const notReadSpan = document.createElement('span');
       notReadSpan.textContent = notRead.length.toString();
       notReadSpan.className = styles.notRead;
 
-      bulloon.append(senderDiv, contentSpan, timestampSpan, notReadSpan);
+      const timestampSpan = document.createElement('span');
+      const newDate = new Date(timestamp);
+      const today = new Date();
+      if (newDate.toLocaleDateString() === today.toLocaleDateString()) {
+        timestampSpan.textContent = newDate.toLocaleTimeString(undefined, {
+          timeStyle: 'short',
+        });
+      } else {
+        timestampSpan.textContent = newDate.toLocaleDateString();
+      }
+      timestampSpan.className = styles.timestamp;
+
+      bulloon.append(senderDiv, contentSpan, notReadSpan, timestampSpan);
 
       return bulloon;
     },
@@ -125,7 +137,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   // 페이지네이션 feat scroll
   const handleScroll = useCallback(() => {
     if (chatContainer.current?.scrollTop === 0 && messages) {
-      console.log('채팅창이 맨 위에 도달!');
       setPage((prev) => prev + 1);
     }
   }, []);
@@ -196,7 +207,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   }, [me, chatContainer.current]);
 
   useEffect(() => {
-    console.log('update!', updated);
     if (!updated) return;
 
     updateNotRead(updated.id, updated.notRead);
@@ -205,7 +215,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   return (
     <div className={styles.chatWindow}>
       <div className={styles.chatHeader}>
-        <h2 className="chatName">채팅방</h2>
+        <h3 className={styles.chatName}></h3>
         <button
           onClick={() => {
             leave(roomId);
@@ -218,8 +228,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       <div className={styles.chatContent} ref={chatContainer}>
         <div ref={chatBottom} />
       </div>
-      <div className={styles.inputContainer}>
-        <form action="">
+      <div>
+        <form action="" className={styles.inputContainer}>
           <input
             type="text"
             value={content}

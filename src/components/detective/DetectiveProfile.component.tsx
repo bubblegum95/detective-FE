@@ -28,7 +28,6 @@ const DetectiveProfileComponent = () => {
       if (!token) return;
 
       const profile = await getMyDetectiveProfile(token);
-      console.log(profile);
       setProfile(profile);
     };
 
@@ -41,12 +40,12 @@ const DetectiveProfileComponent = () => {
   const defaultImage =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQVBnzyBUCefWBzjFKnRTPiLetwlAkmY6cAw&s';
   const userImage = profile.profile
-    ? `${url}/public/images/${profile.profile.path}`
+    ? `${url}/images/${profile.profile.path}`
     : defaultImage;
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.detectiveImage}>
         <ProfileImage
           path={userImage}
           width={200}

@@ -1,32 +1,51 @@
 .navBar {
   display: flex;
+  gap: 5px;
+
+  justify-content: space-between;
+  align-items: center;
+
   background-color: white;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.navBar > span {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0 10px;
-}
-
-.navBar > span > span {
-  /* background-color: black; */
-  color: black;
-  border: 0px none;
-  border-radius: 10%;
-  padding: 5px;
-}
-
-.logout {
-  border: 0px none;
-  height: 20px;
 }
 
 .rightBtn {
   margin-left: auto;
+
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link > div {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 2px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.link > div:hover {
+  border: 2px solid rgb(255, 0, 183);
+  box-shadow: 0 0 10px rgb(255, 0, 183), 0 0 20px rgb(255, 0, 183),
+    0 0 30px rgb(255, 0, 183), 0 0 40px rgb(255, 0, 183);
+}
+
+.logout {
+  background-color: black;
+  color: white;
+  border: 2px solid black;
+  padding: 7px;
+  border-radius: 5px;
+  margin: 2px;
+  height: 100%;
+  cursor: pointer;
+  transition: 0.3s;
 }

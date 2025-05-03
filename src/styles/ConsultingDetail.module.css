@@ -1,15 +1,36 @@
 .container {
   position: fixed;
-  top: 100px;
-  left: 100px;
-  border-radius: 10px;
-  border: 0px;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  border-radius: 5px;
+  border: 0;
   box-shadow: 5;
   background-color: white;
   color: black;
   margin: 10px;
+  padding: 10px;
+}
+
+.xbtn {
+  border: 0;
+  border: 5px;
+  box-shadow: 3px;
 }
 
 .content {
-  padding: 50px;
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+}
+
+.title {
+  color: gray;
+  text-align: center;
+}
+
+.consultingTextArea {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
 }

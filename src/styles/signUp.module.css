@@ -1,21 +1,60 @@
+.signUpLinks {
+  display: grid;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 50px;
+}
+
+.signUpLink {
+  text-decoration-line: none;
+  color: inherit;
+  width: 250px;
+}
+
+.signUpLink:hover {
+  box-shadow: 0 0 10px yellowgreen, 0 0 20px yellowgreen, 0 0 30px yellowgreen,
+    0 0 40px yellowgreen;
+}
+
+.signUpLink > div {
+  color: black;
+  background-color: aliceblue;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.signUp {
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+}
+
+.signUpForm > input {
+  width: 200px;
+  padding: 5px;
+  margin: 5px 0 5px 0;
+  border-radius: 5px;
+}
+
 .validationMsg {
   display: flex;
   gap: 10px;
-  border: 5px;
+  border-radius: 10%;
 }
 
 .validationMsg > div {
   color: red;
-  background-color: yellow;
-  border: 1px solid blue;
+  border: 1px;
   border-radius: 5%;
   padding: 5px;
 }
 
 .comparedPw > div {
   color: red;
-  background-color: yellow;
-  border: 1px solid blue;
+  border: 1px;
   border-radius: 5%;
   padding: 5px;
 }

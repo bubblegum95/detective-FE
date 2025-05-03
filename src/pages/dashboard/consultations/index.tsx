@@ -13,7 +13,7 @@ export interface Consultation {
   id: number;
   subject: string | undefined;
   content: string | undefined;
-  status: string | undefined;
+  status: 'pending' | 'rejected' | 'accepted' | 'completed';
   createdAt: string | undefined;
   consumer: User;
   detective: Detective;
@@ -26,7 +26,8 @@ const Consultations = () => {
       <div>
         <SideBar />
       </div>
-      <div>
+      <div className={dashboardStyle.dashboardContent}>
+        <h1>My Consulting</h1>
         <ConsultationComponent />
       </div>
     </div>

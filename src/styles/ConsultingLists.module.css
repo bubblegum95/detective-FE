@@ -1,0 +1,55 @@
+.container {
+  display: grid;
+  gap: 10px;
+}
+
+.item {
+  display: grid;
+  gap: 5px;
+  align-items: center;
+
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.item > div {
+  padding: 2px;
+}
+
+.itemBox {
+  cursor: pointer;
+  display: grid;
+  gap: 10px;
+}
+
+.consumerData {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.consultationStatus {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.namedStatus {
+  padding: 5px 10px 5px 10px;
+  border: 0;
+  border-radius: 15px;
+  color: white;
+  background-color: crimson;
+}
+
+.btn {
+  border: 0;
+  border-radius: 3px;
+  box-shadow: 3px;
+  padding: 5px;
+  margin: 2px;
+  color: white;
+  background-color: rgb(0, 102, 255);
+  cursor: pointer;
+}

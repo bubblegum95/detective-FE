@@ -19,11 +19,9 @@ export async function getDetectiveConsultations(
     }
     const result = data.data as Consultation[];
     const total = data.total as number;
-    console.log(result);
 
     return { consultations: result, total };
   } catch (error) {
-    console.log(error);
     return { consultations: [], total: 0 };
   }
 }

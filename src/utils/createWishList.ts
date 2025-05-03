@@ -18,11 +18,8 @@ export async function createWishlist(detectiveId: number) {
       throw new Error(data.error);
     }
 
-    console.log('result:', data.data);
-
     return data.data as Wishlist;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }

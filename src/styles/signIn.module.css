@@ -1,3 +1,13 @@
+.login {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.login > h1 {
+  text-align: center;
+}
+
 .signInForm {
   display: grid;
   justify-content: center;
@@ -7,45 +17,48 @@
 .loginInput {
   color: black;
   background-color: whitesmoke;
-  padding: 5px;
-  width: 300px;
+  padding: 7px;
+  margin: 5px 0 5px 0;
+  width: 250px;
+  border-radius: 5px;
 }
 
-.validationMsg {
-  display: flex;
-  gap: 10px;
-  border: 5px;
-}
-
-.validationMsg > div {
-  color: red;
-  background-color: yellow;
-  border: 1px solid blue;
-  border-radius: 5%;
-  padding: 5px;
-}
-
-.btn {
-  border: 1px solid black;
-  border-radius: 10%;
+.logInBtn {
+  border: 1px none;
+  border-radius: 5px;
   background-color: white;
-  color: blue;
-  margin: 10px auto;
-  padding: 5px 10px;
+  color: gray;
+  width: auto;
+
+  padding: 10px;
+  margin: 5px auto;
+  cursor: pointer;
 }
 
 .btns {
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
 
-.btns > span {
-  border: 1px solid yellow;
-  border-radius: 15%;
+.btn {
+  border: 2px solid;
+  border-radius: 5px;
   background-color: white;
-  color: blue;
-  margin-top: 10px;
-  padding: 5px 10px;
+  color: gray;
+  width: auto;
+
+  padding: 10px;
+  margin: 5px auto;
+  text-decoration: none;
+  text-align: center;
+  font-size: small;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  border: 2px solid yellowgreen;
+  box-shadow: 0 0 10px yellowgreen, 0 0 20px yellowgreen, 0 0 30px yellowgreen,
+    0 0 40px yellowgreen;
 }

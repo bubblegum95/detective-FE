@@ -1,5 +1,6 @@
 import { Star } from 'lucide-react';
 import { useState } from 'react';
+import styles from '../../styles/Review.module.css';
 
 interface ReviewScoreProps {
   name: string;
@@ -16,16 +17,17 @@ const ReviewScore: React.FC<ReviewScoreProps> = ({ name, range, onChange }) => {
   };
 
   return (
-    <div>
+    <span>
       {Array.from({ length: range }).map((_, index) => (
         <Star
           key={index}
           color="gray"
           fill={index < selected ? 'gold' : 'none'}
           onClick={() => handleClick(index)}
+          className={styles.star}
         />
       ))}
-    </div>
+    </span>
   );
 };
 

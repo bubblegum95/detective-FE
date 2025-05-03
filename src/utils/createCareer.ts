@@ -28,7 +28,6 @@ export async function createCareer(dto: CreateCareerType) {
 
     return true;
   } catch (error) {
-    console.error(error);
     return false;
   }
 }

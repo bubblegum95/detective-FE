@@ -10,7 +10,8 @@ const Profile = () => {
       <div>
         <SideBar />
       </div>
-      <div>
+      <div className={dashboardStyle.dashboardContent}>
+        <h1>My Page</h1>
         <UserData />
       </div>
     </div>

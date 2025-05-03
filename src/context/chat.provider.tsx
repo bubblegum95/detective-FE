@@ -87,7 +87,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!token) return;
-    const socketInstance = io('http://127.0.0.1:3400', {
+    const NEXT_PUBLIC_SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
+    const socketInstance = io(NEXT_PUBLIC_SOCKET_URL, {
       withCredentials: true,
       transports: ['websocket'],
       auth: { authorization: token },
@@ -160,7 +161,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Event Listener
   socket?.on('rooms', (data: { rooms: RoomList[]; total: number }) => {
-    console.log('rooms: ', data.rooms);
     setRoomLists(data);
   });
 

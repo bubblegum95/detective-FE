@@ -10,7 +10,8 @@ const DetectiveProfile = () => {
       <div>
         <SideBarComponent />
       </div>
-      <div>
+      <div className={styles.dashboardContent}>
+        <h1>Detective Profile</h1>
         <DetectiveProfileComponent />
       </div>
     </div>

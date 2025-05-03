@@ -3,6 +3,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getRegions } from '../../utils/getRegions';
+import styles from '../../styles/CategoriesRegions.module.css';
 
 const AreaList = () => {
   const [areas, setAreas] = useState<Array<{ id: number; name: string }>>([]);
@@ -17,11 +18,11 @@ const AreaList = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.searchKeyword}>
       <div>
-        <h1 className="title">지역</h1>
+        <h1 className={styles.title}>지역</h1>
       </div>
-      <div className="regions list">
+      <div className={styles.lists}>
         {areas.map((area) => (
           <span
             key={area.id}

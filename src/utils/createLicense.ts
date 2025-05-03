@@ -25,7 +25,7 @@ export async function createLicense(dao: {
 
     return true;
   } catch (error) {
-    console.log(error);
+    alert(error);
     return false;
   }
 }

@@ -23,7 +23,6 @@ export async function updateCareer(career: Career) {
 
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }

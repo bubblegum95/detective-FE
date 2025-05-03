@@ -9,7 +9,7 @@ interface CreateConsultingProps {
   detectiveId: Detective['id'];
 }
 
-const CreateConsulting: React.FC<CreateConsultingProps> = ({ detectiveId }) => {
+const CreateConsulting = ({ detectiveId }: CreateConsultingProps) => {
   const [form, setForm] = useState({ subject: '', content: '' });
   const [selectedCategory, setSelectedCategory] = useState<Category['id']>();
   const [categories, setCategories] = useState<Category[]>();
@@ -45,7 +45,7 @@ const CreateConsulting: React.FC<CreateConsultingProps> = ({ detectiveId }) => {
         <label htmlFor="category" className={styles.label}>
           category
         </label>
-        <br />
+
         <select
           id="category"
           className={styles.select}
@@ -63,11 +63,11 @@ const CreateConsulting: React.FC<CreateConsultingProps> = ({ detectiveId }) => {
               </option>
             ))}
         </select>
-        <br />
+
         <label htmlFor="subject" className={styles.label}>
           subject
         </label>
-        <br />
+
         <input
           className={styles.subject}
           type="text"
@@ -78,11 +78,11 @@ const CreateConsulting: React.FC<CreateConsultingProps> = ({ detectiveId }) => {
             setForm((prev) => ({ ...prev, subject: e.target.value }));
           }}
         />
-        <br />
+
         <label htmlFor="content" className={styles.label}>
           content
         </label>
-        <br />
+
         <textarea
           name=""
           id=""
@@ -95,7 +95,7 @@ const CreateConsulting: React.FC<CreateConsultingProps> = ({ detectiveId }) => {
             setForm((prev) => ({ ...prev, content: e.target.value }));
           }}
         ></textarea>
-        <br />
+
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -105,6 +105,7 @@ const CreateConsulting: React.FC<CreateConsultingProps> = ({ detectiveId }) => {
             }
             handleCreateConsulting();
           }}
+          className={styles.btn}
         >
           신청완료
         </button>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { memo } from 'react';
+import styles from '../../styles/Pagenation.module.css';
 
 export interface PagenationProps {
   page: number;
@@ -15,7 +16,7 @@ const Pagenation: React.FC<PagenationProps> = ({
   handlePageChange,
 }) => {
   return (
-    <div>
+    <div className={styles.container}>
       <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
         이전
       </button>

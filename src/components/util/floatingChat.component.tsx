@@ -7,12 +7,13 @@ export interface FloatingChatProps {
   email: string;
 }
 
-const FloatingChat: React.FC<FloatingChatProps> = ({ email }) => {
+const FloatingChat = ({ email }: FloatingChatProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { socket, selectedRoom, me, invite, join, leave } = useChat();
 
   useEffect(() => {
     if (!selectedRoom) return;
+    console.log('selected room:', selectedRoom);
     setIsOpen(true);
     join(selectedRoom);
     const previousRoom = selectedRoom;
@@ -30,8 +31,8 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ email }) => {
       <button
         className={styles.chatButton}
         onClick={() => {
-          setIsOpen(!isOpen);
           invite(email);
+          setIsOpen(!isOpen);
         }}
       >
         💬

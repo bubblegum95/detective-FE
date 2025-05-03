@@ -2,19 +2,19 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import OfficeSearch, { Office } from '../util/officeSearch.component';
-import useDebounce from '../../hooks/useDebounce';
-import SignUpProps from '../../types/signUpProps.interface';
-import foundEmail from '../../utils/foundEmail';
-import { searchOffice } from '../../utils/searchOffice';
-import { signUp } from '../../utils/signUp';
+import OfficeSearch from '../../../components/util/officeSearch.component';
+import useDebounce from '../../../hooks/useDebounce';
+import foundEmail from '../../../utils/foundEmail';
+import { searchOffice } from '../../../utils/searchOffice';
 import {
   verifyPassword,
   checkPhoneNumber,
   comparePassword,
-} from '../../utils/validationCheck';
+} from '../../../utils/validationCheck';
+import { signUp } from '../../../utils/signUp';
+import styles from '../../../styles/signUp.module.css';
 
-const EmployeeSignUp = ({ isActive }: SignUpProps) => {
+const EmployeeSignUp = () => {
   const router = useRouter();
   const [formState, setFormState] = useState<Record<string, any>>({
     user: {
@@ -62,7 +62,6 @@ const EmployeeSignUp = ({ isActive }: SignUpProps) => {
       addressDetail: string;
     }>
   >([]);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const updateForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -126,18 +125,10 @@ const EmployeeSignUp = ({ isActive }: SignUpProps) => {
     }
   }, [debouncedOfficeInput]);
 
-  // 항목 클릭 시 선택
-  const handleSelectOffice = (office: Office) => {
-    setFormState((prev) => ({ ...prev, officeId: office.id }));
-  };
-
   return (
-    <div
-      className="employeeSignUp"
-      style={{ display: isActive ? 'block' : 'none' }}
-    >
+    <div className={styles.signUp}>
       <h1>탐정 직원 회원가입</h1>
-      <form action="" className="signUpForm">
+      <form action="" className={styles.signUpForm}>
         <legend>name</legend>
         <input
           type="text"
@@ -161,7 +152,7 @@ const EmployeeSignUp = ({ isActive }: SignUpProps) => {
           placeholder="email"
         />
         <button onClick={handleFindEmail}>이메일 검증</button>
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{emailState.message}</div>
         </div>
         <legend>nickname</legend>
@@ -186,7 +177,7 @@ const EmployeeSignUp = ({ isActive }: SignUpProps) => {
           maxLength={11}
           placeholder="phone number"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{phoneState.message}</div>
         </div>
         <legend>password</legend>
@@ -198,7 +189,7 @@ const EmployeeSignUp = ({ isActive }: SignUpProps) => {
           onChange={(e) => updateForm(e)}
           placeholder="password"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           {passwordErrors.map((e, index) => (
             <div key={index}>{e}</div>
           ))}
@@ -214,13 +205,17 @@ const EmployeeSignUp = ({ isActive }: SignUpProps) => {
           }}
           placeholder="password"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{pwConfirmState.message}</div>
         </div>
         <legend>직장</legend>
-        <OfficeSearch onSelect={handleSelectOffice} />
+        <OfficeSearch
+          onSelect={(office) => {
+            setFormState((prev) => ({ ...prev, officeId: office.id }));
+          }}
+        />
         <button
-          className="submitBtn"
+          className={styles.submitBtn}
           disabled={
             !emailState.isAvailable ||
             !phoneState.isAvailable ||
@@ -231,10 +226,7 @@ const EmployeeSignUp = ({ isActive }: SignUpProps) => {
           }
           onClick={async (e) => {
             e.preventDefault();
-            await signUp(
-              'http://127.0.0.1:3300/auth/signup/employee',
-              formState
-            );
+            await signUp('auth/signup/employee', formState);
             router.push('/sign-in');
           }}
         >

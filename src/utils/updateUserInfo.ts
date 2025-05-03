@@ -38,9 +38,8 @@ export async function fetchUserInfo(
     if (!response.ok || !data.success) {
       throw new Error(data.message);
     }
-    console.log(data);
     alert(data.message);
   } catch (e) {
-    console.log(e);
+    alert(e);
   }
 }

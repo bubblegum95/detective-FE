@@ -14,8 +14,14 @@
 .chatHeader {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  padding: 5px;
   border-bottom: 1px solid #ddd;
+  height: 40px;
+}
+
+.chatName {
+  color: gray;
 }
 
 .chatContent {
@@ -27,29 +33,31 @@
 .message {
   color: black;
   margin: 20px 5px 20px 5px;
+  align-items: center;
 }
 
 .sender {
-  color: black;
-  margin: 5px;
+  color: rgb(75, 75, 75);
+  margin: 15px;
 }
 
 .content {
   background-color: #f1f1f1;
   color: black;
   padding: 8px;
+  margin: 8px;
   border-radius: 5px;
-  margin-bottom: 5px;
 }
 
 .notRead {
-  color: rgb(198, 198, 60);
+  color: rgb(255, 255, 0);
   margin: 5px;
 }
 
 .timestamp {
-  color: black;
+  color: gray;
   margin: 5px;
+  font-size: smaller;
 }
 
 .inputContainer {

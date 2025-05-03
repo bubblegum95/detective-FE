@@ -21,7 +21,6 @@ export async function updateDetectiveProfileImage(file: File) {
 
     return true;
   } catch (error) {
-    console.error(error);
     return false;
   }
 }

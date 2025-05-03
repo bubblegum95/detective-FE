@@ -1,6 +1,127 @@
 .dashboard {
   display: flex;
-  justify-content: start;
-  flex-wrap: wrap;
-  gap: 50px;
+  justify-content: space-around;
+
+  /* gap: 10px; */
+  width: 100%;
+}
+
+.dashboardContent {
+  width: 80%;
+  padding: 5px;
+}
+
+.container {
+  display: grid;
+  gap: 10px;
+}
+
+.wishItem {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 15px;
+  width: 100%;
+}
+
+.wishHead {
+  display: flex;
+  gap: 10;
+  align-items: center;
+}
+
+.wishContent {
+  display: flex;
+  gap: 200px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wishItemBtns {
+  display: flex;
+  gap: 5px;
+}
+
+.wishItemBtn {
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+}
+
+.roomLists {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+
+.roomList {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px 20px 10px 20px;
+  cursor: pointer;
+}
+
+.participants {
+  display: flex;
+  justify-content: space-between;
+}
+
+.latestMsg {
+  display: flex;
+  justify-content: space-between;
+}
+
+.consultationsContainer {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+
+.consultation {
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px 20px 10px 20px;
+  width: 500px;
+  cursor: pointer;
+}
+
+.officeContent {
+  display: flex;
+  justify-content: space-around;
+  gap: auto;
+}
+
+.businessFileImage {
+  border-radius: 5px;
+}
+
+.updateForm {
+  width: 50%;
+}
+
+.officeAddress {
+  display: grid;
+  gap: 5px;
+  padding-bottom: 5px;
+}
+
+.btns {
+  display: flex;
+  gap: 5px;
+}
+
+.btns > button {
+  cursor: pointer;
+}
+
+.employees {
+  display: flex;
+  justify-content: safe;
+  gap: 10px;
+  padding: 5px;
+}
+
+.employees > div {
+  cursor: pointer;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 20px;
 }

@@ -2,17 +2,17 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import SignUpProps from '../../types/signUpProps.interface';
-import useDebounce from '../../hooks/useDebounce';
-import foundEmail from '../../utils/foundEmail';
-import { signUp } from '../../utils/signUp';
+import useDebounce from '../../../hooks/useDebounce';
+import foundEmail from '../../../utils/foundEmail';
 import {
   checkPhoneNumber,
   verifyPassword,
   comparePassword,
-} from '../../utils/validationCheck';
+} from '../../../utils/validationCheck';
+import { signUp } from '../../../utils/signUp';
+import styles from '../../../styles/signUp.module.css';
 
-const ConsumerSignUp = ({ isActive }: SignUpProps) => {
+const ConsumerSignUp = () => {
   const router = useRouter();
   const [formState, setFormState] = useState({
     name: '',
@@ -88,12 +88,9 @@ const ConsumerSignUp = ({ isActive }: SignUpProps) => {
   }, [formState.passwordConfirm]);
 
   return (
-    <div
-      className="consumerSignUp"
-      style={{ display: isActive ? 'block' : 'none' }}
-    >
+    <div className={styles.signUp}>
       <h1>의뢰인 회원가입</h1>
-      <form action="" className="signUpForm">
+      <form action="" className={styles.signUpForm}>
         <legend>name</legend>
         <input
           type="text"
@@ -128,7 +125,7 @@ const ConsumerSignUp = ({ isActive }: SignUpProps) => {
         >
           이메일 검증
         </button>
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{emailState.message}</div>
         </div>
         <legend>nickname</legend>
@@ -151,7 +148,7 @@ const ConsumerSignUp = ({ isActive }: SignUpProps) => {
           maxLength={11}
           placeholder="phone number"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{phoneState.message}</div>
         </div>
         <legend>password</legend>
@@ -162,7 +159,7 @@ const ConsumerSignUp = ({ isActive }: SignUpProps) => {
           onChange={handleUpdateForm('password')}
           placeholder="password"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           {passwordErrors.map((e, index) => (
             <div key={index}>{e}</div>
           ))}
@@ -175,7 +172,7 @@ const ConsumerSignUp = ({ isActive }: SignUpProps) => {
           onChange={handleUpdateForm('passwordConfirm')}
           placeholder="password"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{pwConfirmState.message}</div>
         </div>
         <button
@@ -190,10 +187,7 @@ const ConsumerSignUp = ({ isActive }: SignUpProps) => {
           }
           onClick={async (e) => {
             e.preventDefault();
-            await signUp(
-              'http://127.0.0.1:3300/auth/signup/consumer',
-              formState
-            );
+            await signUp('auth/signup/consumer', formState);
             // redirection
             router.push('/sign-in');
           }}

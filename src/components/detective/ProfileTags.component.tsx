@@ -28,10 +28,9 @@ export async function removeTag(type: TagType, id: number) {
       throw new Error(data.error);
     }
 
-    console.log('삭제 완료');
     return true;
   } catch (error) {
-    console.log(error);
+    alert(error);
     return false;
   }
 }
@@ -50,11 +49,10 @@ const ProfileTags = <T extends HasIdAndName>({
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        console.log('tag fetch func 실행!');
         const result = await fetchFn();
         setOptions(result);
       } catch (error) {
-        console.error(error);
+        alert(error);
       }
     };
     fetchOptions();
@@ -102,7 +100,7 @@ const ProfileTags = <T extends HasIdAndName>({
           <div>
             <form action="">
               <select id={`tag-select-${type}`} onChange={handleChange}>
-                <option value="">--{type}--</option>
+                <option value="">-------{type}-------</option>
                 {options.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.name}
@@ -110,8 +108,12 @@ const ProfileTags = <T extends HasIdAndName>({
                 ))}
               </select>
               <button
-                onClick={() => {
-                  handleAddTag();
+                onClick={async (e) => {
+                  e.preventDefault();
+                  if (!selectedId) return;
+
+                  const result = await addTag(type, selectedId);
+                  alert('태그를 추가하였습니다.');
                 }}
               >
                 추가하기

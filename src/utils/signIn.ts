@@ -20,7 +20,6 @@ export async function signIn(email: string, password: string) {
     localStorage.setItem('authorization', `Bearer ${token}`);
     return true;
   } catch (e) {
-    console.log(e);
     alert(e);
   }
 }

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signIn } from '../../utils/signIn';
+import styles from '../../styles/signIn.module.css';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -11,9 +12,9 @@ export default function SignIn() {
   const router = useRouter();
 
   return (
-    <div>
+    <div className={styles.login}>
       <h1>로그인 페이지</h1>
-      <form action="" acceptCharset="utf-8" className="signInForm">
+      <form action="" acceptCharset="utf-8" className={styles.signInForm}>
         <legend>email</legend>
         <input
           type="email"
@@ -23,7 +24,7 @@ export default function SignIn() {
           }}
           placeholder="email"
           autoFocus
-          className="loginInput email"
+          className={styles.loginInput}
           maxLength={40}
           minLength={3}
         />
@@ -33,7 +34,7 @@ export default function SignIn() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="password"
-          className="loginInput password"
+          className={styles.loginInput}
         />
         <br />
         <button
@@ -48,24 +49,17 @@ export default function SignIn() {
               }
             } catch (error) {
               alert(error);
-              console.log(error);
             }
           }}
-          className="btn"
+          className={styles.logInBtn}
         >
           로그인
         </button>
       </form>
-      <div className="btns">
-        <span>
-          <button>이메일 찾기</button>
-        </span>
-        <span>
-          <button>비밀번호 찾기</button>
-        </span>
-        <span>
-          <Link href={'/sign-up'}>회원가입</Link>
-        </span>
+      <div className={styles.btns}>
+        <Link href={'/sign-up'} className={styles.btn}>
+          <div className={styles.link}>회원가입</div>
+        </Link>
       </div>
     </div>
   );

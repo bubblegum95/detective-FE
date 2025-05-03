@@ -4,6 +4,7 @@ import { Consultation } from '../../pages/dashboard/consultations';
 import { getConsultations } from '../../utils/getConsultations';
 import Pagenation from '../util/Pagenation.component';
 import ConsultingDetail from '../util/ConsultingDetail.component';
+import styles from '../../styles/dashboard.module.css';
 
 const ConsultationComponent = () => {
   const [page, setPage] = useState<number>(1);
@@ -33,7 +34,7 @@ const ConsultationComponent = () => {
 
   return (
     <div>
-      <div>
+      <div className={styles.consultationsContainer}>
         {consultations.map((consultation) => (
           <div
             key={consultation.id}
@@ -41,13 +42,16 @@ const ConsultationComponent = () => {
               setSelectedConsulting(consultation.id);
               setIsOpen(!isOpen);
             }}
+            className={styles.consultation}
           >
-            <div>상담 제목: {consultation.subject}</div>
-            <div>유형: {consultation.category.name}</div>
-            <div>상담사: {consultation.detective.user.name}</div>
+            <div>의뢰 제목: {consultation.subject}</div>
+            <div>의뢰 유형: {consultation.category.name}</div>
+            <div>피의뢰인: {consultation.detective.user.name}</div>
+            <div>요청상태: {consultation.status}</div>
           </div>
         ))}
       </div>
+
       <Pagenation
         page={page}
         limit={limit}

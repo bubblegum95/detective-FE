@@ -16,6 +16,7 @@ function handleRole(role: Role['name']) {
 
 const SideBar = () => {
   const { userInfo } = useUserInfo();
+  const role = userInfo?.role.name;
   const [useManagement, setUseManagement] = useState<boolean>(false);
 
   useEffect(() => {
@@ -28,29 +29,44 @@ const SideBar = () => {
 
   return (
     <aside className={styles.sideBar}>
-      <div>
-        <Link href={'/dashboard'}>대시보드</Link>
-      </div>
-      <div>
-        <Link href={'/dashboard/profile'}>프로필</Link>
-      </div>
-      <div>
-        <Link href={'/dashboard/chats'}>채팅</Link>
-      </div>
-      <div>
-        <Link href={'/dashboard/consultations'}>상담</Link>
-      </div>
-      <div>
-        <Link href={'/dashboard/my-wishlists'}>찜</Link>
-      </div>
-      <div style={{ display: useManagement ? 'block' : 'none' }}>
-        <Link href={'/dashboard/my-consultations'}>내 상담</Link>
-      </div>
-      <div style={{ display: useManagement ? 'block' : 'none' }}>
-        <Link href={'/dashboard/detective-profile'}>탐정프로필</Link>
-      </div>
+      <Link href={'/dashboard'} className={styles.link}>
+        <div>대시보드</div>
+      </Link>
+      <Link href={'/dashboard/profile'} className={styles.link}>
+        <div>프로필</div>
+      </Link>
+      <Link href={'/dashboard/chats'} className={styles.link}>
+        <div>채팅</div>
+      </Link>
+      <Link href={'/dashboard/consultations'} className={styles.link}>
+        <div>상담</div>
+      </Link>
+      <Link href={'/dashboard/my-wishlists'} className={styles.link}>
+        <div>찜</div>
+      </Link>
+      <Link
+        href={'/dashboard/my-consultations'}
+        className={styles.link}
+        style={{ display: useManagement ? 'block' : 'none' }}
+      >
+        <div>내 상담</div>
+      </Link>
+      <Link
+        href={'/dashboard/detective-profile'}
+        className={styles.link}
+        style={{ display: useManagement ? 'block' : 'none' }}
+      >
+        <div>탐정프로필</div>
+      </Link>
+      <Link
+        href={'/dashboard/office'}
+        className={styles.link}
+        style={{ display: role === 'employer' ? 'block' : 'none' }}
+      >
+        <div>탐정사무소</div>
+      </Link>
     </aside>
   );
 };
 
-export default memo(SideBar);
+export default SideBar;

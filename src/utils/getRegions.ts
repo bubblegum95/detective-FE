@@ -9,7 +9,6 @@ export async function getRegions() {
     if (!res.success) {
       throw new Error(res.error);
     }
-    console.log(res.data);
     return res.data as Region[];
   } catch (error) {
     return [];

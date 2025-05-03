@@ -1,0 +1,52 @@
+.container {
+  color: black;
+  background-color: white;
+  justify-content: center;
+  padding: 50px;
+}
+
+.leaveReviewForm {
+  display: grid;
+  gap: 5px;
+
+  background-color: rgb(245, 245, 245);
+  color: black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  /* width: 500px; */
+}
+
+.evaluation {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  text-align: center;
+}
+
+.textarea {
+  height: 140px;
+  width: 700px;
+}
+
+.btn {
+  width: 60px;
+}
+
+.star {
+  cursor: pointer;
+}
+
+.reviewsContainer {
+  padding: 10px;
+  display: grid;
+  gap: 20px;
+}
+
+.review {
+  border: 2px solid rgb(229, 229, 229);
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}

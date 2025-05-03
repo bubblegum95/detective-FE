@@ -27,7 +27,6 @@ export async function updateLicense(license: License) {
 
     return true;
   } catch (error) {
-    console.error(error);
     return false;
   }
 }

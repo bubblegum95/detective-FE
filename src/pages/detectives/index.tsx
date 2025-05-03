@@ -4,6 +4,8 @@ import { useEffect, useReducer, useRef } from 'react';
 import { Detective } from '../../types/userInfoState.interface';
 import { fetchDetectives } from '../../utils/getDetectives';
 import { useRouter } from 'next/router';
+import styles from '../../styles/Detectives.module.css';
+import Pagenation from '../../components/util/Pagenation.component';
 
 // 액션 타입 정의
 const actionTypes = {
@@ -83,38 +85,29 @@ const Detectives = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       {detectives.map((detective) => (
         <div
           key={detective.id}
-          className="detectiveItems"
+          className={styles.item}
           onClick={() => {
             router.push(`/detectives/${detective.id}`);
           }}
         >
-          <div>{detective.user.name}</div>
-          <div>{detective.subject}</div>
-          <div>{detective.office?.name}</div>
-          <div>{detective.office?.address}</div>
+          <div>탐정: {detective.user.name}</div>
+          <div>한마디: {detective.subject}</div>
+          <div className={styles.officeData}>
+            <div>{detective.office?.name}</div>
+            <div>{detective.office?.address}</div>
+          </div>
         </div>
       ))}
-      <div>
-        <button
-          onClick={() => handlePageChange(page - 1)}
-          disabled={page === 1}
-        >
-          이전
-        </button>
-        <span>
-          {page} / {Math.ceil(total / 10)}
-        </span>
-        <button
-          onClick={() => handlePageChange(page + 1)}
-          disabled={page === Math.ceil(total / 10)}
-        >
-          다음
-        </button>
-      </div>
+      <Pagenation
+        page={page}
+        limit={10}
+        total={total}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 };

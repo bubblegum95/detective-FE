@@ -1,29 +1,31 @@
 'use client';
 
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import useDebounce from '../../hooks/useDebounce';
-import SignUpProps from '../../types/signUpProps.interface';
-import foundEmail from '../../utils/foundEmail';
-import { signUp } from '../../utils/signUp';
+import DaumPostcodeButton from '../../../components/util/DaumPostcodeButton.component';
+import useDebounce from '../../../hooks/useDebounce';
+import foundEmail from '../../../utils/foundEmail';
 import {
   verifyPassword,
   checkPhoneNumber,
   comparePassword,
-} from '../../utils/validationCheck';
+} from '../../../utils/validationCheck';
+import { signUpForEmployer } from '../../../utils/signUpForEmployer';
+import styles from '../../../styles/signUp.module.css';
 
-const EmployerSignUp = ({ isActive }: SignUpProps) => {
+const EmployerSignUp = () => {
+  const MemoDaum = memo(DaumPostcodeButton);
   const router = useRouter();
   const [formState, setFormState] = useState<{ [key: string]: any }>({
     user: { name: '', email: '', nickname: '', phoneNumber: '', password: '' },
     office: {
-      gender: '',
-      company: '',
+      name: '',
       address: '',
+      addressDetail: '',
       founded: '',
-      businessNumber: '',
+      businessNum: '',
     },
-    file: '',
+    file: null,
   });
   const debouncedPassword = useDebounce(formState.user.password, 500);
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -49,14 +51,15 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
     message: '',
   });
 
-  function updateForm(key: string, value: any): void {
-    setFormState((pre) => ({ ...pre, [key]: value }));
-  }
+  const updateForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, dataset } = e.target;
+    const category = dataset.category as string;
 
-  const handleUpdateForm =
-    (input: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      updateForm(input, e.target.value);
-    };
+    setFormState((prev) => ({
+      ...prev,
+      [category]: { ...prev[category], [name]: value },
+    }));
+  }, []);
 
   useEffect(() => {
     const { useEng, useNum, adjustLen, errors } =
@@ -67,12 +70,12 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
 
   useEffect(() => {
     setEmailState({ isAvailable: false, message: '이메일 검증 미완료' });
-  }, [formState.email]);
+  }, [formState.user.email]);
 
   useEffect(() => {
-    const isCorrectPhoneNum = checkPhoneNumber(formState.phoneNumber);
+    const isCorrectPhoneNum = checkPhoneNumber(formState.user.phoneNumber);
     setPhoneState((pre) => ({ ...pre, isAvailable: isCorrectPhoneNum }));
-  }, [formState.phoneNumber]);
+  }, [formState.user.phoneNumber]);
 
   useEffect(() => {
     phoneState.isAvailable
@@ -89,18 +92,21 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
   }, [passwordConfirm]);
 
   return (
-    <div
-      className="employeeSignUp"
-      style={{ display: isActive ? 'block' : 'none' }}
-    >
+    <div className={styles.signUp}>
       <h1>사장님 회원가입</h1>
-      <form action="" className="signUpForm">
+      <form
+        action=""
+        className={styles.signUpForm}
+        encType="multipart/form-data"
+      >
         <legend>name</legend>
         <input
           type="text"
           className="nameInput"
-          value={formState.name}
-          onChange={handleUpdateForm('name')}
+          value={formState.user.name}
+          name="name"
+          data-category="user"
+          onChange={updateForm}
           minLength={2}
           maxLength={11}
           placeholder="name"
@@ -109,8 +115,10 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
         <input
           type="email"
           className="emailInput"
-          value={formState.email}
-          onChange={handleUpdateForm('email')}
+          value={formState.user.email}
+          name="email"
+          data-category="user"
+          onChange={updateForm}
           minLength={3}
           maxLength={40}
           placeholder="email"
@@ -119,7 +127,7 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
           onClick={async (e) => {
             e.preventDefault();
             const { isExistingEmail, foundEmailMsg } = await foundEmail(
-              formState.email
+              formState.user.email
             );
             setEmailState({
               isAvailable: isExistingEmail,
@@ -129,15 +137,17 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
         >
           이메일 검증
         </button>
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{emailState.message}</div>
         </div>
         <legend>nickname</legend>
         <input
           type="text"
           className="nicknameInput"
-          value={formState.nickname}
-          onChange={handleUpdateForm('nickname')}
+          value={formState.user.nickname}
+          name="nickname"
+          data-category="user"
+          onChange={updateForm}
           minLength={2}
           maxLength={8}
           placeholder="nickname"
@@ -146,24 +156,28 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
         <input
           type="text"
           className="phoneInput"
-          value={formState.phoneNumber}
-          onChange={handleUpdateForm('phoneNumber')}
+          value={formState.user.phoneNumber}
+          name="phoneNumber"
+          data-category="user"
+          onChange={updateForm}
           minLength={11}
           maxLength={11}
           placeholder="phone number"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{phoneState.message}</div>
         </div>
         <legend>password</legend>
         <input
           type="password"
           className="passwordInput"
-          value={formState.password}
-          onChange={handleUpdateForm('password')}
+          value={formState.user.password}
+          name="password"
+          data-category="user"
+          onChange={updateForm}
           placeholder="password"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           {passwordErrors.map((e, index) => (
             <div key={index}>{e}</div>
           ))}
@@ -176,60 +190,72 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
           onChange={(e) => setPasswordConfirm(e.target.value)}
           placeholder="password"
         />
-        <div className="validationMsg">
+        <div className={styles.validationMsg}>
           <div>{pwConfirmState.message}</div>
         </div>
-        <fieldset>
-          <legend>gender</legend>
-          <input
-            type="radio"
-            value={formState.gender}
-            name="male"
-            onChange={handleUpdateForm('gender')}
-          />
-          남성
-          <input
-            type="radio"
-            value={formState.gender}
-            name="female"
-            onChange={handleUpdateForm('gender')}
-          />
-          여성
-        </fieldset>
         <legend>company</legend>
         <input
           type="text"
           placeholder="상호명"
-          onChange={handleUpdateForm('company')}
-          value={formState.company}
+          onChange={updateForm}
+          value={formState.office.name}
+          name="name"
+          data-category="office"
         />
         <legend>address</legend>
         <input
           type="text"
           placeholder="사업장 주소"
-          onChange={handleUpdateForm('address')}
-          value={formState.address}
+          onChange={updateForm}
+          value={formState.office.address}
+          name="address"
+          data-category="office"
+        />
+        <MemoDaum
+          onComplete={(value: string) =>
+            setFormState((prev) => ({
+              ...prev,
+              office: { ...prev.office, address: value },
+            }))
+          }
+        />
+        <legend>address detail</legend>
+        <input
+          type="text"
+          placeholder="사업장 상세 주소"
+          onChange={updateForm}
+          value={formState.office.addressDetail}
+          name="addressDetail"
+          data-category="office"
         />
         <legend>founded</legend>
         <input
           type="text"
           placeholder="YYYYMMDD"
-          onChange={handleUpdateForm('address')}
-          value={formState.founded}
+          onChange={updateForm}
+          value={formState.office.founded}
+          name="founded"
+          data-category="office"
         />
         <legend>business number</legend>
         <input
           type="text"
           placeholder="0000000000"
-          onChange={handleUpdateForm('address')}
-          value={formState.businessNumber}
+          onChange={updateForm}
+          value={formState.office.businessNum}
+          name="businessNum"
+          data-category="office"
         />
         <legend>file</legend>
         <input
           type="file"
           accept="image/*"
-          value={formState.file}
-          onChange={handleUpdateForm('file')}
+          onChange={(e) => {
+            setFormState((prev) => ({
+              ...prev,
+              file: e.target.files && e.target.files[0],
+            }));
+          }}
         />
         <button
           className="submitBtn"
@@ -243,11 +269,9 @@ const EmployerSignUp = ({ isActive }: SignUpProps) => {
           }
           onClick={async (e) => {
             e.preventDefault();
-            await signUp(
-              'http://127.0.0.1:3300/auth/signup/employer',
-              formState,
-              { 'Content-type': 'mulipart/form-data' }
-            );
+            const result = await signUpForEmployer(formState);
+            if (!result) return;
+
             router.push('/sign-in');
           }}
         >

@@ -10,7 +10,8 @@ const Dashboard = () => {
       <div>
         <SideBar />
       </div>
-      <div>
+      <div className={styles.dashboardContent}>
+        <h1>Dashboard</h1>
         <UserInfo />
       </div>
     </div>

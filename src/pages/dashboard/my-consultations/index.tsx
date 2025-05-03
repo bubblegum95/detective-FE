@@ -8,7 +8,8 @@ const MyConsultations = () => {
       <div>
         <SideBarComponent />
       </div>
-      <div>
+      <div className={styles.dashboardContent}>
+        <h1>Consulting Request</h1>
         <ConsultationsForDetective />
       </div>
     </div>

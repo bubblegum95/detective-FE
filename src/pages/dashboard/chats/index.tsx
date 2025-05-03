@@ -10,7 +10,8 @@ const Chats = () => {
       <div>
         <SideBar />
       </div>
-      <div>
+      <div className={dashboardStyle.dashboardContent}>
+        <h1>Chats</h1>
         <ChatComponent />
       </div>
     </div>

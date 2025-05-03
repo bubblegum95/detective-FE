@@ -1,0 +1,34 @@
+.container {
+  padding: 20px;
+}
+
+.detectiveDataContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.detectiveData {
+  display: grid;
+  align-items: center;
+  width: 600px;
+  padding: 10px;
+}
+
+.titleSection {
+  width: 250px;
+  padding: 20px;
+}
+
+.tags {
+  display: flex;
+  gap: 10px;
+}
+
+.tag {
+  color: black;
+  background-color: rgb(243, 247, 188);
+  border: 3px solid rgb(255, 0, 179);
+  border-radius: 15px;
+  padding: 8px;
+}

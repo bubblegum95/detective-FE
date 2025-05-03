@@ -16,18 +16,29 @@ const ConsultingApplication: React.FC<ConsultingApplicationProps> = ({
 
   return (
     <div>
-      <button onClick={() => setIsOpen(!isOpen)}>상담하기</button>
+      <button
+        className={styles.btn}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsOpen(!isOpen);
+        }}
+      >
+        의뢰하기
+      </button>
 
       {isOpen && (
-        <div className={styles.container}>
-          <button
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
-          >
-            ❌
-          </button>
-          <CreateConsulting detectiveId={detectiveId} />
+        <div className={styles.modalWrap}>
+          <div className={styles.container}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpen(!isOpen);
+              }}
+            >
+              ❌
+            </button>
+            <CreateConsulting detectiveId={detectiveId} />
+          </div>
         </div>
       )}
     </div>

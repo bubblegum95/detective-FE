@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Participant, useChat } from '../../context/chat.provider';
 import ChatWindow from '../util/chatWindow.component';
 import Pagenation from '../util/Pagenation.component';
+import styles from '../../styles/dashboard.module.css';
 
 const ChatComponent = () => {
   const {
@@ -38,33 +39,34 @@ const ChatComponent = () => {
   }, [selectedRoom]);
 
   return (
-    <div>
-      <div>
-        <div className="room-list">
-          {roomLists?.rooms.map((list) => (
-            <div
-              key={list.roomId}
-              onClick={() => {
-                setIsOpen(true);
-                setSelectedRoom(list.roomId);
-                setMe(list.me);
-              }}
-            >
-              <p>참여자: {list.participants.join(', ')}</p>
-              <p>
-                {list.latestMessage?.sender.user?.nickname}:{' '}
-                {list.latestMessage?.content}
-              </p>
-            </div>
-          ))}
-        </div>
-        <Pagenation
-          page={page}
-          limit={limit}
-          total={roomLists.total}
-          handlePageChange={setPage}
-        />
+    <div className={styles.container}>
+      <div className={styles.roomLists}>
+        {roomLists?.rooms.map((list) => (
+          <div
+            className={styles.roomList}
+            key={list.roomId}
+            onClick={() => {
+              setIsOpen(true);
+              setSelectedRoom(list.roomId);
+              setMe(list.me);
+            }}
+          >
+            <p>참여자: {list.participants.join(', ')}</p>
+
+            <p>
+              {list.latestMessage?.sender.user?.nickname}:{' '}
+              {list.latestMessage?.content}
+            </p>
+          </div>
+        ))}
       </div>
+
+      <Pagenation
+        page={page}
+        limit={limit}
+        total={roomLists.total}
+        handlePageChange={setPage}
+      />
 
       {isOpen && selectedRoom && me && (
         <ChatWindow

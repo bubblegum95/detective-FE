@@ -6,6 +6,9 @@ import CreateConsulting from '../../../components/util/CreateConsulting.componen
 import { useChat } from '../../../context/chat.provider';
 import ChatWindow from '../../../components/util/chatWindow.component';
 import WishlistComponent from '../../../components/wishlist/Wishlist.component';
+import SideBarComponent from '../../../components/sideBar.component';
+import dashboardStyle from '../../../styles/dashboard.module.css';
+import consultingAppStyles from '../../../styles/ConsultingApp.module.css';
 
 export async function getMyWishlists() {
   try {
@@ -30,7 +33,7 @@ export async function getMyWishlists() {
 
     return { wishlists, total };
   } catch (error) {
-    console.log(error);
+    alert(error);
     return {
       wishlists: [],
       total: 0,
@@ -72,49 +75,51 @@ const MyWishlists = () => {
   if (!socket) return;
 
   return (
-    <div>
-      {myWish &&
-        myWish.wishlists.map(({ id, detective }) => (
-          <div key={id}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <WishlistComponent detectiveId={detective.id} size={20} />
-              <h4>{detective.user.name}</h4>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <div>연락처: {detective.user.phoneNumber}</div>
-                <div>이메일: {detective.user.email}</div>
+    <div className={dashboardStyle.dashboard}>
+      <div>
+        <SideBarComponent />
+      </div>
+      <div className={dashboardStyle.dashboardContent}>
+        <h1>My Wishlists</h1>
+        {myWish &&
+          myWish.wishlists.map(({ id, detective }) => (
+            <div key={id} className={dashboardStyle.wishItem}>
+              <div className={dashboardStyle.wishHead}>
+                <WishlistComponent detectiveId={detective.id} size={20} />
+                <h4>{detective.user.name}</h4>
               </div>
-              <div style={{ display: 'flex', gap: '5px' }}>
-                <button
-                  onClick={() => {
-                    setSelected(detective.id);
-                    setConsultingOpen(!consultingOpen);
-                  }}
-                >
-                  상담하기
-                </button>
-                <button
-                  onClick={() => {
-                    setChatOpen(!chatOpen);
-                    invite(detective.user.email);
-                  }}
-                >
-                  채팅하기
-                </button>
+              <div className={dashboardStyle.wishContent}>
+                <div>
+                  <div>연락처: {detective.user.phoneNumber}</div>
+                  <div>이메일: {detective.user.email}</div>
+                </div>
+                <div className={dashboardStyle.wishItemBtns}>
+                  <button
+                    className={dashboardStyle.wishItemBtn}
+                    onClick={() => {
+                      setSelected(detective.id);
+                      setConsultingOpen(!consultingOpen);
+                    }}
+                  >
+                    상담하기
+                  </button>
+                  <button
+                    className={dashboardStyle.wishItemBtn}
+                    onClick={() => {
+                      setChatOpen(!chatOpen);
+                      invite(detective.user.email);
+                    }}
+                  >
+                    채팅하기
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
 
       {consultingOpen && selected && (
-        <div>
+        <div className={consultingAppStyles.container}>
           <button
             onClick={() => {
               setConsultingOpen(!setConsultingOpen);

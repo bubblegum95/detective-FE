@@ -18,8 +18,8 @@ const NavBar = () => {
   const router = useRouter();
   const { userInfo, setUserInfo } = useUserInfo();
   const handleSetUserInfo = useCallback(async (token: string) => {
-    if (token) {
-      const data = await getParcialUserInfo(token);
+    const data = await getParcialUserInfo(token);
+    if (data) {
       setUserInfo(data);
     }
   }, []);
@@ -33,41 +33,45 @@ const NavBar = () => {
 
   return (
     <nav className={styles.navBar}>
-      <span className={styles.leftBtn}>
-        <span>
-          <Link href={'/'}>홈</Link>
-        </span>
-        <span>목록1</span>
-        <span>목록2</span>
-      </span>
-      <span className={styles.rightBtn}>
-        <span
+      <div className={styles.leftBtn}>
+        <Link href={'/'} className={styles.link}>
+          <div>홈</div>
+        </Link>
+
+        {/* <span>목록1</span>
+        <span>목록2</span> */}
+      </div>
+      <div className={styles.rightBtn}>
+        <Link
+          href={'/sign-in'}
+          className={styles.link}
           style={{
             display: userInfo ? 'none' : 'block',
           }}
         >
-          <Link href={'/sign-in'}>Login</Link>
-        </span>
-        <span
-          className={styles.dashboardBtn}
+          <div>Login</div>
+        </Link>
+
+        <Link
+          href={'/dashboard'}
+          className={styles.link}
           style={{ display: userInfo ? 'block' : 'none' }}
         >
-          <Link href={'/dashboard'}>{userInfo?.nickname}</Link>
-        </span>
-        <span>
-          <button
-            className={styles.logout}
-            style={{ display: userInfo ? 'block' : 'none' }}
-            onClick={() => {
-              logout();
-              setUserInfo(undefined);
-              router.push('/');
-            }}
-          >
-            logout
-          </button>
-        </span>
-      </span>
+          <div className={styles.dashboardBtn}>{userInfo?.nickname}</div>
+        </Link>
+
+        <button
+          className={styles.logout}
+          style={{ display: userInfo ? 'block' : 'none' }}
+          onClick={() => {
+            logout();
+            setUserInfo(undefined);
+            router.push('/');
+          }}
+        >
+          logout
+        </button>
+      </div>
     </nav>
   );
 };

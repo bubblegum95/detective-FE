@@ -1,22 +1,26 @@
 export async function signUp(
-  url: string,
+  path: string,
   form: { [key: string]: any },
-  headers?: { [key: string]: string }
+  contentType?: string
 ) {
   try {
-    const response = await fetch(url, {
+    const BASE_URL = process.env.BASE_URL;
+    const response = await fetch(`${BASE_URL}/${path}`, {
       method: 'POST',
-      headers: headers ?? { 'Content-type': 'application/json' },
+      headers: { 'Content-type': contentType ?? 'application/json' },
       body: JSON.stringify(form),
     });
     const data = await response.json();
 
     if (!response.ok || !data.success) {
-      throw new Error(data.message);
+      throw new Error(data.error);
     }
 
     alert('회원가입 성공');
+
+    return true;
   } catch (e) {
-    alert(e);
+    console.log(e);
+    return false;
   }
 }

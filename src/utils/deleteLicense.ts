@@ -18,7 +18,6 @@ export async function deleteLicense(id: number) {
     }
     return true;
   } catch (error) {
-    console.error(error);
     return false;
   }
 }

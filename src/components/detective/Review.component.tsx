@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Detective, Review } from '../../types/userInfoState.interface';
 import Pagenation from '../util/Pagenation.component';
 import ReviewScore from './ReviewScore.component';
+import styles from '../../styles/Review.module.css';
 
 interface ReviewProps {
   id: Detective['id'];
@@ -27,10 +28,8 @@ export async function getReviews(
 
     const reviews = data.data as Review[];
     const total = data.total;
-    console.log(reviews);
     return { reviews, total };
   } catch (error) {
-    console.error(error);
     return { reviews: [], total: 0 };
   }
 }
@@ -64,9 +63,10 @@ export async function createReview(
       throw new Error(data.message);
     }
 
-    return data.data;
+    return true;
   } catch (error) {
-    console.log(error);
+    alert(error);
+    return false;
   }
 }
 
@@ -99,78 +99,92 @@ const ReviewsComponent: React.FC<ReviewProps> = ({ id }) => {
     setReviewForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSetReviewForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetReviewForm = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setReviewForm((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div>
-      {
-        <div>
-          <h3>Leave a Review</h3>
-          <form action="">
-            <label htmlFor="">accuracy</label>
+    <div className={styles.container}>
+      <div className={styles.leaveReviewContainer}>
+        <form action="" className={styles.leaveReviewForm}>
+          <div className={styles.evaluation}>
+            <label htmlFor="">정확도</label>
             <ReviewScore name="accuracy" range={5} onChange={handleScore} />
-            <br />
-            <label htmlFor="">completion</label>
-            <ReviewScore name="completion" range={5} onChange={handleScore} />
-            <br />
-            <label htmlFor="">reliability</label>
-            <ReviewScore name="reliability" range={5} onChange={handleScore} />
-            <br />
-            <label htmlFor="">speed</label>
-            <ReviewScore name="speed" range={5} onChange={handleScore} />
-            <br />
-            <label htmlFor="">comment</label>
-            <br />
-            <input
-              type="text"
-              name="comment"
-              value={reviewForm.comment}
-              onChange={handleSetReviewForm}
-            />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                createReview(id, reviewForm);
-              }}
-            >
-              작성완료
-            </button>
-          </form>
-        </div>
-      }
-
-      <h3>Reviews</h3>
-      {reviewsInfo &&
-        reviewsInfo.reviews &&
-        reviewsInfo.reviews.map((review) => (
-          <div key={review.id}>
-            <div>
-              <h4>{review.consumer.nickname}</h4>
-            </div>
-            <div>
-              <span>accuracy: {review.accuracy} 점</span>{' '}
-              <span>completion: {review.completion} 점</span>{' '}
-              <span>reliability: {review.reliability} 점</span>{' '}
-              <span>speed: {review.speed} 점</span>
-            </div>
-            <div>{review.comment}</div>
-            <div>{new Date(review.createdAt).toLocaleDateString()}</div>
           </div>
-        ))}
 
-      {reviewsInfo && reviewsInfo.total !== 0 && (
-        <div>
-          <Pagenation
-            page={page}
-            limit={limit}
-            total={reviewsInfo.total}
-            handlePageChange={setPage}
+          <div className={styles.evaluation}>
+            <label htmlFor="">완성도</label>
+            <ReviewScore name="completion" range={5} onChange={handleScore} />
+          </div>
+
+          <div className={styles.evaluation}>
+            <label htmlFor="">신뢰도</label>
+            <ReviewScore name="reliability" range={5} onChange={handleScore} />
+          </div>
+
+          <div className={styles.evaluation}>
+            <label htmlFor="">속도</label>
+            <ReviewScore name="speed" range={5} onChange={handleScore} />
+          </div>
+
+          <textarea
+            name="comment"
+            value={reviewForm.comment}
+            placeholder="comment..."
+            onChange={handleSetReviewForm}
+            className={styles.textarea}
           />
-        </div>
-      )}
+
+          <button
+            className={styles.btn}
+            onClick={(e) => {
+              const result = createReview(id, reviewForm);
+              if (!result) {
+                e.preventDefault();
+              }
+              alert('댓글 작성을 완료하였습니다.');
+            }}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+
+      <div className={styles.reviewsContainer}>
+        {reviewsInfo &&
+          reviewsInfo.reviews &&
+          reviewsInfo.reviews.map((review) => (
+            <div key={review.id} className={styles.review}>
+              <div className={styles.reviewer}>
+                {review.consumer.nickname} (
+                {new Date(review.createdAt).toLocaleDateString()})
+              </div>
+
+              <div>
+                <span>정확도: {review.accuracy} 점</span>{' '}
+                <span>완성도: {review.completion} 점</span>{' '}
+                <span>신뢰도: {review.reliability} 점</span>{' '}
+                <span>속도: {review.speed} 점</span>
+              </div>
+
+              <div>{review.comment}</div>
+            </div>
+          ))}
+
+        {reviewsInfo && reviewsInfo.total !== 0 && (
+          <div>
+            <Pagenation
+              page={page}
+              limit={limit}
+              total={reviewsInfo.total}
+              handlePageChange={setPage}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

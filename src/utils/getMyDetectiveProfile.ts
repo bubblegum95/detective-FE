@@ -12,10 +12,9 @@ export async function getMyDetectiveProfile(token: string) {
     if (!res.ok || !data.success) {
       throw new Error(data.error);
     }
-
     return data.data as DetectiveProfile;
   } catch (err) {
-    console.log(err);
+    alert(err);
     return;
   }
 }

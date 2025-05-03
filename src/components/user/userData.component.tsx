@@ -14,7 +14,6 @@ const UserData = () => {
 
   return (
     <div className="myPage">
-      <h1>My Page</h1>
       <button
         onClick={() => {
           toUpdate ? setToUpdate(false) : setToUpdate(true);
