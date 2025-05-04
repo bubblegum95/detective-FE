@@ -19,8 +19,7 @@ export const getServerSideProps: GetServerSideProps<{
   const res = await req.json();
   const detective: Detective = res.data;
 
-  const defaultImage =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQVBnzyBUCefWBzjFKnRTPiLetwlAkmY6cAw&s';
+  const defaultImage = '/detective_default.png';
   const userImage = detective.profile
     ? `${url}/public/images/${detective.profile.path}`
     : defaultImage;

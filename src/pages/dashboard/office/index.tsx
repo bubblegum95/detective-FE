@@ -6,7 +6,6 @@ import styles from '../../../styles/dashboard.module.css';
 import { Office } from '../../../types/userInfoState.interface';
 import Image from 'next/image';
 import DaumPostcodeButton from '../../../components/util/DaumPostcodeButton.component';
-import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 
 export async function getMyOffice() {
@@ -175,7 +174,13 @@ export default function MyOffice() {
 
           <section>
             <div>
-              <h2>직원</h2>
+              <div className={styles.employeesTitle}>
+                <h2>직원</h2>
+                <button onClick={() => {}} className={styles.addBtn}>
+                  직원등록
+                </button>
+              </div>
+
               <div className={styles.employees}>
                 {office?.employees?.map((employee) => (
                   <div

@@ -22,6 +22,7 @@ export async function signUpForEmployer(form: { [key: string]: any }) {
     return true;
   } catch (e) {
     console.log(e);
+    alert(e);
     return false;
   }
 }

@@ -28,7 +28,7 @@ export default function Map({ address, name }: MapProps) {
           if (status === kakaoMap.services.Status.OK) {
             const coords = new kakaoMap.LatLng(result[0].y, result[0].x);
             const mapOption = {
-              center: new kakaoMap.LatLng(result[0].y, result[0].x), // 기본 중심 좌표
+              center: coords, // 기본 중심 좌표
               level: 3,
             };
             const map = new kakaoMap.Map(mapContainer, mapOption);
@@ -42,6 +42,8 @@ export default function Map({ address, name }: MapProps) {
             });
             infowindow.open(map, marker);
             map.setCenter(coords);
+          } else {
+            console.log('not ok');
           }
         });
       });

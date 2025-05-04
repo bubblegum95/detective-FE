@@ -1,5 +1,5 @@
 .container {
-  padding: 20px;
+  padding: 50px;
 }
 
 .detectiveDataContainer {
@@ -11,7 +11,7 @@
 .detectiveData {
   display: grid;
   align-items: center;
-  width: 600px;
+  width: 80%;
   padding: 10px;
 }
 

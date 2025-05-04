@@ -112,6 +112,21 @@
   cursor: pointer;
 }
 
+.employeesTitle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.addBtn {
+  cursor: pointer;
+  padding: 5px;
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  background-color: rgb(0, 119, 255);
+}
+
 .employees {
   display: flex;
   justify-content: safe;

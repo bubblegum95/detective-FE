@@ -37,8 +37,7 @@ const DetectiveProfileComponent = () => {
   if (!profile) return;
 
   const url = process.env.BASE_URL;
-  const defaultImage =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQVBnzyBUCefWBzjFKnRTPiLetwlAkmY6cAw&s';
+  const defaultImage = '/detective_default.png';
   const userImage = profile.profile
     ? `${url}/images/${profile.profile.path}`
     : defaultImage;

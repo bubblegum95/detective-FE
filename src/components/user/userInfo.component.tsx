@@ -20,8 +20,7 @@ const UserInfo = () => {
   }, []);
 
   const url = process.env.BASE_URL;
-  const defaultImage =
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQVBnzyBUCefWBzjFKnRTPiLetwlAkmY6cAw&s';
+  const defaultImage = '/user_default.png';
   const userImage = user?.file
     ? `${url}/images/${user.file.path}`
     : defaultImage;
