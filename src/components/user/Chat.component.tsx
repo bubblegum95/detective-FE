@@ -24,7 +24,7 @@ const ChatComponent = () => {
   useEffect(() => {
     if (!socket) return;
     getMyRooms();
-  }, [socket]);
+  }, [socket, getMyRooms]);
 
   useEffect(() => {
     if (!selectedRoom) return;
@@ -36,7 +36,7 @@ const ChatComponent = () => {
     return () => {
       leave(previousRoom);
     };
-  }, [selectedRoom]);
+  }, [selectedRoom, join, leave]);
 
   return (
     <div className={styles.container}>

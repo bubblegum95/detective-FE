@@ -71,7 +71,6 @@ export async function createReview(
 }
 
 const ReviewsComponent: React.FC<ReviewProps> = ({ id }) => {
-  if (!id) return;
   const [reviewsInfo, setReviewsInfo] = useState<{
     reviews: Review[];
     total: number;
@@ -93,7 +92,7 @@ const ReviewsComponent: React.FC<ReviewProps> = ({ id }) => {
     };
 
     handleGetReviews();
-  }, [id]);
+  }, [id, limit, page]);
 
   const handleScore = (name: string, value: number) => {
     setReviewForm((prev) => ({ ...prev, [name]: value }));

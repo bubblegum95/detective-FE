@@ -54,7 +54,7 @@ export default function Map({ address, name }: MapProps) {
     return () => {
       document.body.removeChild(script);
     };
-  }, [address]);
+  }, [address, name]);
 
   return (
     <section>

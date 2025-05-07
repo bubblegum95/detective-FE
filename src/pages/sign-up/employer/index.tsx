@@ -89,7 +89,7 @@ const EmployerSignUp = () => {
       passwordConfirm
     );
     setPwConfirmState({ isAvailable: isCompared, message: comparedMsg });
-  }, [passwordConfirm]);
+  }, [passwordConfirm, formState.user.password]);
 
   return (
     <div className={styles.signUp}>

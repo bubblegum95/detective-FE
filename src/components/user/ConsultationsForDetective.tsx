@@ -35,7 +35,6 @@ export async function updateStatus(
 
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -94,7 +93,7 @@ const ConsultationsForDetective = () => {
     return () => {
       leave(previousRoom);
     };
-  }, [selectedRoom]);
+  }, [selectedRoom, join, leave]);
 
   return (
     <div className={styles.container}>

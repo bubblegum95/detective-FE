@@ -143,7 +143,7 @@ const ProfileLicenses: React.FC<ProfileLicensesProps> = ({ licenses }) => {
         <label htmlFor="">자격증</label>
       </h3>
       {licenses.map((license) => (
-        <ProfileLicense license={license} />
+        <ProfileLicense license={license} key={license.id} />
       ))}
 
       <CreateLicense />

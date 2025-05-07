@@ -1,6 +1,5 @@
 export async function signUpForEmployer(form: { [key: string]: any }) {
   try {
-    console.log('form', form);
     const newForm = new FormData();
     newForm.append('user', JSON.stringify(form.user));
     newForm.append('office', JSON.stringify(form.office));
@@ -21,7 +20,6 @@ export async function signUpForEmployer(form: { [key: string]: any }) {
 
     return true;
   } catch (e) {
-    console.log(e);
     alert(e);
     return false;
   }

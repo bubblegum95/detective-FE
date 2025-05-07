@@ -36,7 +36,6 @@ export default async function foundEmail(
 
     return { isExistingEmail, foundEmailMsg };
   } catch (e) {
-    console.log(e);
     isExistingEmail = false;
     foundEmailMsg = '❌ 이메일 검증 미완료';
     return { isExistingEmail, foundEmailMsg };

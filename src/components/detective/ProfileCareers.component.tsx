@@ -173,7 +173,10 @@ const ProfileCareers: React.FC<ProfileCareersProps> = ({ careers }) => {
       <h3>
         <label htmlFor="">경력/업무</label>
       </h3>
-      {careers && careers.map((career) => <ProfileCareer career={career} />)}
+      {careers &&
+        careers.map((career) => (
+          <ProfileCareer career={career} key={career.id} />
+        ))}
       <CreateCareer />
     </div>
   );

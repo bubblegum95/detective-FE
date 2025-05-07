@@ -13,7 +13,6 @@ const FloatingChat = ({ email }: FloatingChatProps) => {
 
   useEffect(() => {
     if (!selectedRoom) return;
-    console.log('selected room:', selectedRoom);
     setIsOpen(true);
     join(selectedRoom);
     const previousRoom = selectedRoom;
@@ -21,7 +20,7 @@ const FloatingChat = ({ email }: FloatingChatProps) => {
     return () => {
       leave(previousRoom);
     };
-  }, [selectedRoom]);
+  }, [selectedRoom, join, leave]);
 
   if (!socket) return;
 

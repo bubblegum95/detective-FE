@@ -113,7 +113,7 @@ const EmployeeSignUp = () => {
       passwordConfirm
     );
     setPwConfirmState({ isAvailable: isCompared, message: comparedMsg });
-  }, [passwordConfirm]);
+  }, [passwordConfirm, formState.user.password]);
 
   useEffect(() => {
     const fetchOffices = async () => {

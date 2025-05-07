@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactStrictMode: true, // React Strict Mode 활성화
   env: {
     BASE_URL: process.env.BASE_URL,

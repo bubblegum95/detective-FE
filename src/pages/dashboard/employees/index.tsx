@@ -12,7 +12,6 @@ export default function Employees() {
 
     async function addEmployee() {
       if (typeof token !== 'string') {
-        console.log(token); // 여기서 undefind
         alert('요청 형식이 잘못되었습니다.');
         return;
       }
@@ -45,7 +44,7 @@ export default function Employees() {
     }
 
     addEmployee();
-  }, [token]);
+  }, [token, router]);
 
   return <div></div>;
 }

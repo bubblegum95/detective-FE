@@ -17,19 +17,23 @@ async function logout() {
 const NavBar = () => {
   const router = useRouter();
   const { userInfo, setUserInfo } = useUserInfo();
-  const handleSetUserInfo = useCallback(async (token: string) => {
-    const data = await getParcialUserInfo(token);
-    if (data) {
-      setUserInfo(data);
-    }
-  }, []);
+
+  const handleSetUserInfo = useCallback(
+    async (token: string) => {
+      const data = await getParcialUserInfo(token);
+      if (data) {
+        setUserInfo(data);
+      }
+    },
+    [setUserInfo]
+  );
 
   useEffect(() => {
     const token = localStorage.getItem('authorization');
     if (!token) return;
 
     handleSetUserInfo(token);
-  }, []);
+  }, [handleSetUserInfo]);
 
   return (
     <nav className={styles.navBar}>

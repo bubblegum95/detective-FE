@@ -85,7 +85,7 @@ const ConsumerSignUp = () => {
       formState.passwordConfirm
     );
     setPwConfirmState({ isAvailable: isCompared, message: comparedMsg });
-  }, [formState.passwordConfirm]);
+  }, [formState.passwordConfirm, formState.password]);
 
   return (
     <div className={styles.signUp}>

@@ -70,7 +70,7 @@ const MyWishlists = () => {
     return () => {
       leave(previousRoom);
     };
-  }, [selectedRoom]);
+  }, [selectedRoom, leave, join]);
 
   if (!socket) return;
 

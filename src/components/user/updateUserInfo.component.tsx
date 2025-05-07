@@ -74,7 +74,7 @@ const UpdateUserInfo = () => {
 
   useEffect(() => {
     handleFileLoaded();
-  }, [file]);
+  }, [handleFileLoaded]);
 
   useEffect(() => {
     const { useEng, useNum, adjustLen, errors } =
@@ -90,7 +90,7 @@ const UpdateUserInfo = () => {
       debouncedPwConfirm
     );
     setPwCompared({ isCompared, comparedMsg });
-  }, [debouncedPwConfirm]);
+  }, [debouncedPwConfirm, passwordState.newPassword]);
 
   return (
     <div className={styles.userInfo}>

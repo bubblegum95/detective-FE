@@ -2,11 +2,11 @@
   "name": "detective_fe",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://bubblegum.한국",
+  "proxy": "https://bubblegum.한국/api",
   "scripts": {
     "dev": "NODE_ENV=development next dev --turbopack -p 4000",
     "build": "NODE_ENV=production next build",
-    "start": "NODE_ENV=production next start -p 4000",
+    "start": "NODE_ENV=production next start -p 4000 -H 0.0.0.0",
     "lint": "next lint"
   },
   "dependencies": {

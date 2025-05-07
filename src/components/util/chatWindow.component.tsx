@@ -34,6 +34,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   const handleSendMessage = useCallback(
     (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
       e.preventDefault();
+      const token = localStorage.getItem('authorization');
+      if (!token) return;
+
       if (content.trim()) {
         sendMessage(roomId, content);
         setContent('');
@@ -90,7 +93,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
 
       return bulloon;
     },
-    []
+    [me]
   );
 
   const updateNotRead = useCallback(
@@ -105,7 +108,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       (bulloon as HTMLDivElement).dataset.notRead = newNotRead.join(',');
 
       // 3. 내부의 notRead span 찾아서 텍스트 수정
-      const notReadSpan = bulloon.querySelector('.notRead');
+      const notReadSpan = bulloon.querySelector(`.${styles.notRead}`);
       if (notReadSpan) {
         const length = newNotRead.length.toString();
         if (length === '0') return;
@@ -132,18 +135,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       chatContainer.current?.appendChild(newBulloon);
       clearReceiveNow();
     }
-  }, [receiveNow, chatContainer.current]);
+  }, [receiveNow, clearReceiveNow, createSpeechBulloon]);
 
   // 페이지네이션 feat scroll
   const handleScroll = useCallback(() => {
     if (chatContainer.current?.scrollTop === 0 && messages) {
       setPage((prev) => prev + 1);
     }
-  }, []);
+  }, [messages]);
 
   useEffect(() => {
     getMessages(roomId, page, 10);
-  }, [page]);
+  }, [page, getMessages, roomId]);
 
   useEffect(() => {
     messages &&
@@ -160,39 +163,45 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
         );
         chatContainer.current?.prepend(bulloon);
       });
-  }, [messages]);
+  }, [messages, createSpeechBulloon]);
 
   useEffect(() => {
     // 창 오픈시 스크롤 아래로
     chatBottom.current &&
       chatBottom.current.scrollIntoView({ behavior: 'instant' });
-  }, [chatBottom.current]);
+  }, []);
 
   useEffect(() => {
     receiveNow && handleReceiveMessage(); // 실시간 메시지 수신시
     chatBottom.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [receiveNow, chatBottom.current]);
+  }, [receiveNow, handleReceiveMessage]);
 
   useEffect(() => {
     if (!chatContainer.current) return;
     chatContainer.current.addEventListener('scroll', handleScroll); // 스크롤 맨 위에 도달 시
-  }, []);
+  }, [handleScroll]);
 
   useEffect(() => {
     const container = chatContainer.current;
     if (!container) return;
 
     const messageElements = container.querySelectorAll('[data-message-id]');
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.map((entry) => {
+          console.log('entry:', entry);
+
           if (entry.isIntersecting) {
             const el = entry.target as HTMLElement;
-            const messageId = el.dataset.messageId;
-            if (!messageId) return;
+            const messageId = el.dataset.messageId as string;
+            console.log('messageId: ', messageId);
 
+            if (!messageId) return;
             const notRead = el.dataset.notRead?.split(',');
+
             if (notRead && notRead.includes(me.toString())) {
+              console.log('read message:', +messageId, me); // 여기가 안찍히면 동작 안하는거?
               readMessage(+messageId, +me);
             }
           }
@@ -204,13 +213,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
     messageElements.forEach((el) => {
       observer.observe(el);
     });
-  }, [me, chatContainer.current]);
+  }, [me, readMessage]);
 
   useEffect(() => {
     if (!updated) return;
 
     updateNotRead(updated.id, updated.notRead);
-  }, [updated]);
+  }, [updated, updateNotRead]);
 
   return (
     <div className={styles.chatWindow}>

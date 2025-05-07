@@ -24,10 +24,8 @@ export async function getMyOffice() {
     if (!res.ok || !data.success) {
       throw new Error(data.error);
     }
-    console.log(data.data);
     return data.data;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }
@@ -59,7 +57,6 @@ export async function updateOffice(form: {
 
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
