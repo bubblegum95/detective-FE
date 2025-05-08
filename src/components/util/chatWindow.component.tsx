@@ -184,24 +184,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
   useEffect(() => {
     const container = chatContainer.current;
     if (!container) return;
-
-    const messageElements = container.querySelectorAll('[data-message-id]');
+    console.log('observer creating...');
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.map((entry) => {
-          console.log('entry:', entry);
-
           if (entry.isIntersecting) {
             const el = entry.target as HTMLElement;
             const messageId = el.dataset.messageId as string;
-            console.log('messageId: ', messageId);
 
             if (!messageId) return;
             const notRead = el.dataset.notRead?.split(',');
 
             if (notRead && notRead.includes(me.toString())) {
-              console.log('read message:', +messageId, me); // 여기가 안찍히면 동작 안하는거?
               readMessage(+messageId, +me);
             }
           }
@@ -210,10 +205,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ roomId, me, onClose }) => {
       { threshold: 1.0 }
     );
 
+    const messageElements = container.querySelectorAll('[data-message-id]');
+    console.log('message elements: ', messageElements);
     messageElements.forEach((el) => {
       observer.observe(el);
     });
-  }, [me, readMessage]);
+
+    return () => observer.disconnect();
+  }, [me, readMessage, messages]); // messages를 의존성 배열에 추가하여 메시지 생성 이후 옵저버를 작동하도록 함
 
   useEffect(() => {
     if (!updated) return;
